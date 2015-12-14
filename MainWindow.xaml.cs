@@ -10,31 +10,18 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace CampusAssist
 {
     /// <summary>
-    /// LoginWindow.xaml 的交互逻辑
+    /// MainWindow.xaml 的交互逻辑
     /// </summary>
-    public partial class LoginWindow : Window
+    public partial class MainWindow : Window
     {
-        public LoginWindow()
+        public MainWindow()
         {
             InitializeComponent();
-        }
-
-        private void onExit(object sender, RoutedEventArgs e)
-        {
-            Close();
-        }
-
-        private void onLogin(object sender, RoutedEventArgs e)
-        {
-            MainWindow wd = new MainWindow();
-            wd.Show();
-            Close();
         }
     }
 }
