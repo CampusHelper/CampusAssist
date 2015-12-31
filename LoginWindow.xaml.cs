@@ -32,9 +32,23 @@ namespace CampusAssist
 
         private void onLogin(object sender, RoutedEventArgs e)
         {
+            System.Net.CookieContainer ck = new System.Net.CookieContainer();
+            System.Collections.ArrayList l = WebReauest.GetHtmlData("http://www.baidu.com", ck);
+            for(int i = 0; i < l.Count; i++)
+            {
+                MessageBox.Show(l[i].ToString());
+            }
+            
             MainWindow wd = new MainWindow();
             wd.Show();
             Close();
+            
+        }
+
+        private void onEmail(object sender, RoutedEventArgs e)
+        {
+            Email form = new Email();
+            form.Show();
         }
     }
 }

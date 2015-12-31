@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CampusAssist"
         mc:Ignorable="d"
-        Title="登录" FontSize="26.667" Width="308.351" Height="390.046" AllowsTransparency="True" WindowStyle="None" WindowStartupLocation="CenterScreen">
+        Title="登录" FontSize="26.667" Width="308.351" Height="390.046" WindowStartupLocation="CenterScreen" AllowsTransparency="True" WindowStyle="None">
     <Window.Background>
         <ImageBrush ImageSource="img/background.png" Stretch="UniformToFill"/>
     </Window.Background>
@@ -15,32 +15,33 @@
             <Image x:Name="image" HorizontalAlignment="Center" VerticalAlignment="Center" Source="img/xiaohui.png" Width="120"/>
         </DockPanel>
         <Label x:Name="label" Margin="0 10 0 10" Content="ECNU校园助手" HorizontalAlignment="Center"/>
-
-        <!--Textbox-->
-        <Grid HorizontalAlignment="Center" Width="273">
+        <Grid HorizontalAlignment="Center" Width="272" Margin="18,0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="80"></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition Width="80"/>
+                <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
             </Grid.RowDefinitions>
-            <TextBox Grid.Column="1" Grid.Row="0" x:Name="userID" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalAlignment="Left" Foreground="#FF999999" Background="#66C1C1C1" BorderBrush="{x:Null}" MaxLines="1" CaretBrush="Black" SelectionBrush="#FF5B5B5B" Width="177"/>
-            <Label Grid.Column="0" Grid.Row="0" x:Name="labelID" Content="学号" HorizontalAlignment="Left" VerticalAlignment="Top" Height="36" FontSize="21.333"/>
-            <PasswordBox Grid.Column="1" Grid.Row="1" x:Name="password" VerticalAlignment="Top" HorizontalAlignment="Left" Foreground="#FF999999" Background="#66C1C1C1" BorderBrush="{x:Null}" CaretBrush="Black" SelectionBrush="#FF5B5B5B" Width="177"/>
-            <Label Grid.Column="0" Grid.Row="1" x:Name="labelPassWd" Content="密码" HorizontalAlignment="Left" VerticalAlignment="Top" Height="36" FontSize="21.333"/>
-            <Label Grid.Column="0" Grid.Row="2" x:Name="labelCaptcha" Content="验证码" HorizontalAlignment="Left" VerticalAlignment="Top" Height="36" FontSize="21.333"/>
+            <TextBox Grid.Column="1" Grid.Row="0" x:Name="userID" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalAlignment="Left" Foreground="#FF999999" Background="#66C1C1C1" BorderBrush="{x:Null}" MaxLines="1" CaretBrush="Black" SelectionBrush="#FF5B5B5B" Width="177" Height="36" Margin="0,0,-21,0"/>
+            <Label  Grid.Column="0" Grid.Row="0" x:Name="labelID" Content="学号" HorizontalAlignment="Left" VerticalAlignment="Top" Height="36" FontSize="21.333" Width="109"/>
+            <PasswordBox Grid.Column="1" Grid.Row="1" x:Name="password" VerticalAlignment="Top" HorizontalAlignment="Left" Foreground="#FF999999" Background="#66C1C1C1" BorderBrush="{x:Null}" CaretBrush="Black" SelectionBrush="#FF5B5B5B" Width="177" Height="36" Margin="0,0,-21,0"/>
+            <Label Grid.Column="0" Grid.Row="1" x:Name="labelPassWd" Content="密码" VerticalAlignment="Top" Height="36" FontSize="21.333"/>
+            <Label Grid.Column="0" Grid.Row="2" x:Name="labelCaptcha" Content="验证码" HorizontalAlignment="Left" VerticalAlignment="Top" Height="36" FontSize="21.333" Width="74"/>
             <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="1">
                 <TextBox x:Name="captcha" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalAlignment="Left" Foreground="#FF999999" Background="#66C1C1C1" BorderBrush="{x:Null}" MaxLines="1" CaretBrush="Black" SelectionBrush="#FF5B5B5B" Width="102"/>
                 <Image x:Name="captchaImg" HorizontalAlignment="Left" VerticalAlignment="Top" Source="img/captcha.png" Height="36" Width="112"/>
             </StackPanel>
         </Grid>
 
+        <!--Textbox-->
+
         <!--Button-->
         <StackPanel Orientation="Horizontal" Margin="20 20 20 0" HorizontalAlignment="Center">
             <Button x:Name="loginBtn" Content="登录"  Width="75" BorderThickness="0" Background="#FFB70031" Foreground="White" Click="onLogin"/>
+            <Button x:Name="Test" Content="邮件" Width="75" Click="onEmail"/>
             <Button x:Name="closeBtn" Content="退出" Margin="30 0 0 0" Width="75" IsCancel="True" Click="onExit" BorderThickness="0" Background="#FFB70031" Foreground="White"/>
         </StackPanel>
     </StackPanel>
