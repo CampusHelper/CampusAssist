@@ -39,13 +39,22 @@ namespace CampusAssist
         {
             Regex re = new Regex(@"收件箱（\d{0,4}）");
             string emailNum = re.Match(htmlstr).Value;
+            int i = emailNum.IndexOf('（') + 1;
+            emailNum = emailNum.Substring(i);
+            i = emailNum.IndexOf('）');
+            emailNum = emailNum.Substring(0, i);
+
             re = new Regex(@"未读邮件（\d{0,4}）");
             string unreadNum = re.Match(htmlstr).Value;
+            i = unreadNum.IndexOf('（') + 1;
+            unreadNum = unreadNum.Substring(i);
+            i = unreadNum.IndexOf('）');
+            unreadNum = unreadNum.Substring(0, i);
 
             string[] rtnStr = new string[2];
             rtnStr[0] = emailNum;
             rtnStr[1] = unreadNum;
-            return rtnStr;                      // rtn[0]为 "收件箱(XXX)" rtn[1]为 "未读邮件(XXX)"
+            return rtnStr;                      // rtn[0]为 收件箱数量 rtn[1]为 未读邮件数量
         }
         /*
             获取姓名，校园卡状态，余额
