@@ -127,8 +127,8 @@ namespace CampusAssist
         }
 
         /*
-            获取考试安排
-        */
+           获取考试安排
+       */
         public static string[] getExam(string htmlstr)
         {
             Regex re = new Regex(@"height=""23px"">([\s]*)?<td>.{17}</td>([\s]*)?<td>\w{0,20}</td>");
@@ -149,7 +149,7 @@ namespace CampusAssist
                 tmp = tmp.Substring(0, i);
                 rtnStr[n] += " " + tmp;
 
-                i = htmlstr.IndexOf(tmp);
+                i = htmlstr.IndexOf(tmp + "</td>");
                 tmp = htmlstr.Substring(i);
                 i = tmp.IndexOf("<td");
 
@@ -173,7 +173,12 @@ namespace CampusAssist
                     token = token.Substring(i);
                     i = token.IndexOf('<');
                     token = token.Substring(0, i);
-                    rtnStr[n] += " " + token;
+                    rtnStr[n] += " ";
+                    for (int j = 0; j < token.Length; j++)
+                    {
+                        if (token[j] != ' ')
+                            rtnStr[n] += token[j];
+                    }
 
                     re = new Regex(@"<a href=.+>\w{0,20}</a>");
                     token = re.Match(tmp).Value;
@@ -182,6 +187,7 @@ namespace CampusAssist
                     i = token.IndexOf('<');
                     token = token.Substring(0, i);
                     rtnStr[n] += " " + token;
+
 
                     re = new Regex(@"<td>\w+</td>");
                     token = re.Match(tmp).Value;
