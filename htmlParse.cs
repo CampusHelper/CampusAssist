@@ -211,5 +211,67 @@ namespace CampusAssist
             return rtnStr;              // 课程编号 课程名称 考试日期 考试时间 考试地点 考试情况 座位号
                                         // 或 课程编号 课程名称 [考试情况尚未发布]
         }
+        /*
+            校园卡消费记录
+        */
+        public static string[] getConsume(string htmlstr)
+        {
+            Regex re = new Regex(@"style=""width:138px;"">.{10,20}</span>");
+            MatchCollection mc = re.Matches(htmlstr);
+            int num = mc.Count;
+            string[] rtnStr = new string[num];
+            for (int n = 0; n < num; n++)
+            {
+                string tmp = mc[n].Value;
+                int i = tmp.IndexOf('>') + 1;
+                tmp = tmp.Substring(i);
+                i = tmp.IndexOf('<');
+                tmp = tmp.Substring(0, i);
+                rtnStr[n] = tmp;            //交易日期 交易时间
+
+                i = htmlstr.IndexOf(tmp);
+                tmp = htmlstr.Substring(i);
+                re = new Regex(@"style=""width:64px;"">\w{0,20}</span>");
+                string token = re.Match(tmp).Value;
+                i = token.IndexOf('>') + 1;
+                token = token.Substring(i);
+                i = token.IndexOf('<');
+                token = token.Substring(0, i);
+                rtnStr[n] += " " + token;         //交易名称
+
+                re = new Regex(@">￥\d+.\d+</span>");
+                token = re.Match(tmp).Value;
+                i = token.IndexOf('>') + 1;
+                token = token.Substring(i);
+                i = token.IndexOf('<');
+                token = token.Substring(0, i);
+                rtnStr[n] += " " + token;         //交易金额
+
+                re = new Regex(@"cc"">￥\d+.\d+</span>");
+                token = re.Match(tmp).Value;
+                i = token.IndexOf('>') + 1;
+                token = token.Substring(i);
+                i = token.IndexOf('<');
+                token = token.Substring(0, i);
+                rtnStr[n] += " " + token;         //余额
+
+                re = new Regex(@"style=""width:100px;"">.{0,20}</span>");
+                token = re.Match(tmp).Value;
+                i = token.IndexOf('>') + 1;
+                token = token.Substring(i);
+                i = token.IndexOf('<');
+                token = token.Substring(0, i);
+                rtnStr[n] += " " + token;         //刷卡地点
+
+                re = new Regex(@"Label11"">\d+</span>");
+                token = re.Match(tmp).Value;
+                i = token.IndexOf('>') + 1;
+                token = token.Substring(i);
+                i = token.IndexOf('<');
+                token = token.Substring(0, i);
+                rtnStr[n] += " " + token;         //卡操作计数
+            }
+            return rtnStr;                         //交易日期 交易时间 交易名称 交易金额 余额 刷卡地点 卡操作计数
+        }
     }
 }
