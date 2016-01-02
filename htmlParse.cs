@@ -75,7 +75,7 @@ namespace CampusAssist
             status = status.Substring(i);
             i = status.IndexOf("元");
             rtnStr[1] = status.Substring(0, i);
-            return rtnStr;                      // rtn[0]姓名   rtn[1]卡状态与余额
+            return rtnStr;                      // rtn[0]状态   rtn[1]余额
         }
         /*
            学生专栏通知公告
@@ -126,6 +126,84 @@ namespace CampusAssist
             return rtnStr;                     // 每个string为 通知标题+空格+发布时间+空格+url
         }
 
+        /*
+            获取考试安排
+        */
+        public static string[] getExam(string htmlstr)
+        {
+            Regex re = new Regex(@"height=""23px"">([\s]*)?<td>.{17}</td>([\s]*)?<td>\w{0,20}</td>");
+            MatchCollection mc = re.Matches(htmlstr);
+            int num = mc.Count;
+            string[] rtnStr = new string[num];
+            for (int n = 0; n < num; n++)
+            {
+                string tmp = mc[n].Value;
+                int i = tmp.IndexOf("<td>") + 4;
+                string id = tmp.Substring(i, 17);
+                rtnStr[n] += id;
+                tmp = tmp.Substring(i);
 
+                i = tmp.IndexOf("<td>") + 4;
+                tmp = tmp.Substring(i);
+                i = tmp.IndexOf('<');
+                tmp = tmp.Substring(0, i);
+                rtnStr[n] += " " + tmp;
+
+                i = htmlstr.IndexOf(tmp);
+                tmp = htmlstr.Substring(i);
+                i = tmp.IndexOf("<td");
+
+                if (tmp.Substring(i, 4) == "<td ")
+                {
+                    rtnStr[n] += " [考试情况尚未发布]";
+                }
+                else
+                {
+                    re = new Regex(@"<td>\d{4}-\d{2}-\d{2}</td>");
+                    string token = re.Match(tmp).Value;
+                    i = token.IndexOf('>') + 1;
+                    token = token.Substring(i);
+                    i = token.IndexOf('<');
+                    token = token.Substring(0, i);
+                    rtnStr[n] += " " + token;
+
+                    re = new Regex(@"<td>第.{10,20}</td>");
+                    token = re.Match(tmp).Value;
+                    i = token.IndexOf('>') + 1;
+                    token = token.Substring(i);
+                    i = token.IndexOf('<');
+                    token = token.Substring(0, i);
+                    rtnStr[n] += " " + token;
+
+                    re = new Regex(@"<a href=.+>\w{0,20}</a>");
+                    token = re.Match(tmp).Value;
+                    i = token.IndexOf('>') + 1;
+                    token = token.Substring(i);
+                    i = token.IndexOf('<');
+                    token = token.Substring(0, i);
+                    rtnStr[n] += " " + token;
+
+                    re = new Regex(@"<td>\w+</td>");
+                    token = re.Match(tmp).Value;
+                    i = token.IndexOf('>') + 1;
+                    token = token.Substring(i);
+                    i = token.IndexOf('<');
+                    token = token.Substring(0, i);
+                    rtnStr[n] += " " + token;
+
+                    re = new Regex(@"<td>\d+</td>");
+                    token = re.Match(tmp).Value;
+                    i = token.IndexOf('>') + 1;
+                    token = token.Substring(i);
+                    i = token.IndexOf('<');
+                    token = token.Substring(0, i);
+                    rtnStr[n] += " " + token;
+                }
+            }
+
+
+            return rtnStr;              // 课程编号 课程名称 考试日期 考试时间 考试地点 考试情况 座位号
+                                        // 或 课程编号 课程名称 [考试情况尚未发布]
+        }
     }
 }
