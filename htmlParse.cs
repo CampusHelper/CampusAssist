@@ -61,21 +61,20 @@ namespace CampusAssist
         */
         public static string[] getBalance(string htmlstr)
         {
-            Regex re = new Regex(@"<span id=""Header2_lblUser"" style=""color:OrangeRed;"">\w{1,5}</span>");
-            string name = re.Match(htmlstr).Value;
-            int i = name.IndexOf('>') + 1;
-            name = name.Substring(i);
-            i = name.IndexOf('<');
-            name = name.Substring(0, i);         // 用户姓名
-
-            re = new Regex(@"<span id=""lblCustInfo"">.{0,20}元");
+            string[] rtnStr = new string[2];
+            Regex re = new Regex(@"<span id=""lblCustInfo"">.{0,20}元");
             string status = re.Match(htmlstr).Value;
-            i = status.IndexOf('>') + 1;
+            int i = status.IndexOf('>') + 1;
             status = status.Substring(i);      // 卡的状态和余额
 
-            string[] rtnStr = new string[2];
-            rtnStr[0] = name;
-            rtnStr[1] = status;
+            i = status.IndexOf("：") + 1;
+            status = status.Substring(i);
+            i = status.IndexOf(" ");
+            rtnStr[0] = status.Substring(0,i);
+            i = status.IndexOf("：") + 1;
+            status = status.Substring(i);
+            i = status.IndexOf("元");
+            rtnStr[1] = status.Substring(0, i);
             return rtnStr;                      // rtn[0]姓名   rtn[1]卡状态与余额
         }
         /*
@@ -126,5 +125,7 @@ namespace CampusAssist
 
             return rtnStr;                     // 每个string为 通知标题+空格+发布时间+空格+url
         }
+
+
     }
 }
