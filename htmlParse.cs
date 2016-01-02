@@ -78,5 +78,53 @@ namespace CampusAssist
             rtnStr[1] = status;
             return rtnStr;                      // rtn[0]姓名   rtn[1]卡状态与余额
         }
+        /*
+           学生专栏通知公告
+       */
+        public static string[] getAnnounce(string htmlstr)
+        {
+            Regex re = new Regex(@"target=_blank title="".{0,50}"">");
+            int num = re.Matches(htmlstr).Count;
+            if (num > 7)
+                num = 7;
+            string[] rtnStr = new string[num];
+            for (int n = 0; n < num; n++)                   // title
+            {
+                MatchCollection mc = re.Matches(htmlstr);
+                rtnStr[n] = mc[n].Value;
+                int i = rtnStr[n].IndexOf('"') + 1;
+                rtnStr[n] = rtnStr[n].Substring(i);
+                i = rtnStr[n].IndexOf('"');
+                rtnStr[n] = rtnStr[n].Substring(0, i);
+            }
+
+            re = new Regex(@"<div style='white-space:nowrap'>.{0,15}</div>");
+            string[] tmp = new string[num];
+            for (int n = 0; n < num; n++)                   // time
+            {
+                MatchCollection mc = re.Matches(htmlstr);
+                tmp[n] = mc[n].Value;
+                int i = tmp[n].IndexOf('>') + 1;
+                tmp[n] = tmp[n].Substring(i);
+                i = tmp[n].IndexOf('<');
+                tmp[n] = tmp[n].Substring(0, i);
+                rtnStr[n] += " " + tmp[n];
+            }
+
+            re = new Regex(@"<a href='.{0,40}' target=_blank");
+            tmp = new string[num];
+            for (int n = 0; n < num; n++)                   //url example:/s/110/t/486/1e/45/info138821.htm
+            {
+                MatchCollection mc = re.Matches(htmlstr);
+                tmp[n] = mc[n].Value;
+                int i = tmp[n].IndexOf('\'') + 1;
+                tmp[n] = tmp[n].Substring(i);
+                i = tmp[n].IndexOf('\'');
+                tmp[n] = tmp[n].Substring(0, i);
+                rtnStr[n] += " " + tmp[n];
+            }
+
+            return rtnStr;                     // 每个string为 通知标题+空格+发布时间+空格+url
+        }
     }
 }
