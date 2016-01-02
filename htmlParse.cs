@@ -11,7 +11,7 @@ namespace CampusAssist
         /*
           获取姓名，IP，收件箱数量，未读邮件数量
         */
-        static string[] getInfo(string htmlstr)          // 首页html
+        public static string[] getInfo(string htmlstr)          // 首页html
         {
             Regex re = new Regex(@"&#65281;\w{1,5}</font>");
             string name = re.Match(htmlstr).Value;
@@ -35,7 +35,7 @@ namespace CampusAssist
         /*
             获取收件箱，未读邮件数量
         */
-        static string[] getEmail(string htmlstr)
+        public static string[] getEmail(string htmlstr)
         {
             Regex re = new Regex(@"收件箱（\d{0,4}）");
             string emailNum = re.Match(htmlstr).Value;
@@ -50,17 +50,17 @@ namespace CampusAssist
         /*
             获取姓名，校园卡状态，余额
         */
-        static string[] getBalance(string htmlstr)
+        public static string[] getBalance(string htmlstr)
         {
             Regex re = new Regex(@"<span id=""Header2_lblUser"" style=""color:OrangeRed;"">\w{1,5}</span>");
-            String name = re.Match(htmlstr).Value;
+            string name = re.Match(htmlstr).Value;
             int i = name.IndexOf('>') + 1;
             name = name.Substring(i);
             i = name.IndexOf('<');
             name = name.Substring(0, i);         // 用户姓名
 
             re = new Regex(@"<span id=""lblCustInfo"">.{0,20}元");
-            String status = re.Match(htmlstr).Value;
+            string status = re.Match(htmlstr).Value;
             i = status.IndexOf('>') + 1;
             status = status.Substring(i);      // 卡的状态和余额
 
