@@ -62,7 +62,7 @@ namespace CampusAssist
             }
             HttpWebResponse response = (HttpWebResponse)request.GetResponse();
             string html;
-            if (needRedict(response, out redict,out html))
+            if (needRedict(response, out redict, out html,Encoding.Default))
             {
                 ret = true;
             }
@@ -86,9 +86,9 @@ namespace CampusAssist
             return ticket;
         }
 
-        private bool needRedict(HttpWebResponse res, out string redict,out string html)
+        private bool needRedict(HttpWebResponse res, out string redict, out string html, Encoding encoding)
         {
-            html = responseToString(res, Encoding.Default);
+            html = responseToString(res, encoding);
             int start = html.IndexOf("http://");
             int end = html.IndexOf("\"", start);
             redict = html.Substring(start, end - start);
@@ -123,7 +123,7 @@ namespace CampusAssist
                 request.UserAgent = requestUA;
                 request.CookieContainer = cookies;
                 res = (HttpWebResponse)request.GetResponse();
-            } while (needRedict(res, out redict,out html) && ++cnt <= MAX_REDICT);
+            } while (needRedict(res, out redict, out html, encoding) && ++cnt <= MAX_REDICT);
             return html;
         }
 
