@@ -30,9 +30,7 @@ namespace CampusAssist
         }
 
         private void Username_TextChanged(object sender, EventArgs e)
-        {
-
-        }
+        {}
 
         private void Connect_Click(object sender, System.EventArgs e)
         {
@@ -41,7 +39,7 @@ namespace CampusAssist
             Cursor.Current = Cursors.WaitCursor;
 
             //用110端口新建POP3服务器连接 
-            Server = new TcpClient("smail.ecnu.edu.cn", 110);
+            Server = new TcpClient("pop.163.com", 110);
             Status.Items.Clear();
 
             try
@@ -84,9 +82,82 @@ namespace CampusAssist
         }
 
         private void Email_Load(object sender, EventArgs e)
-        {
+        {}
 
+        private void Disconnect_Click(object sender, EventArgs e)
+        {
+            //将光标置为等待状态 
+            Cursor cr = Cursor.Current;
+            Cursor.Current = Cursors.WaitCursor;
+
+            //向服务器发送QUIT命令从而结束和POP3服务器的会话 
+            Data = "QUIT" + CRLF;
+            szData = System.Text.Encoding.ASCII.GetBytes(Data.ToCharArray());
+            NetStrm.Write(szData, 0, szData.Length);
+            Status.Items.Add(RdStrm.ReadLine());
+
+            //断开连接 
+            NetStrm.Close();
+            RdStrm.Close();
+
+            //改变按钮的状态 
+            Connect.Enabled = true;
+            Disconnect.Enabled = false;
+            Retrieve.Enabled = false;
+
+            //将光标置回原来的状态 
+            Cursor.Current = cr; 
         }
+
+        private void Retrieve_Click(object sender, EventArgs e)
+        {
+            //将光标置为等待状态 
+            Cursor cr = Cursor.Current;
+            Cursor.Current = Cursors.WaitCursor;
+            string szTemp;
+            Message.Clear();
+
+            try
+            {
+                //根据邮件编号从服务器获得相应邮件 
+                Data = "RETR " + MailNum.Text + CRLF;
+                szData = System.Text.Encoding.ASCII.GetBytes(Data.ToCharArray());
+                NetStrm.Write(szData, 0, szData.Length);
+                szTemp = RdStrm.ReadLine();
+
+                if (szTemp[0] != '-')
+                {
+                    //不断地读取邮件内容，只到结束标志：英文句号 
+                    while (szTemp != ".")
+                    {
+                        Message.Text += szTemp;
+                        szTemp = RdStrm.ReadLine();
+                    }
+
+                    //若BackupChBox未选中，则收取邮件后，删除保留在服务器上的邮件 
+                   /* if (BackupChBox.Checked == false)
+                    {
+                        Data = "DELE" + MailNum.Text + CRLF;
+                        szData = System.Text.Encoding.ASCII.GetBytes(Data.ToCharArray());
+                        NetStrm.Write(szData, 0, szData.Length);
+                        Status.Items.Add(RdStrm.ReadLine());
+                    }*/
+                }
+                else
+                {
+                    Status.Items.Add(szTemp);
+                }
+
+                //将光标置回原来的状态 
+                Cursor.Current = cr;
+            }
+            catch (InvalidOperationException err)
+            {
+                Status.Items.Add("Error: " + err.ToString());
+            }
+        }
+
+
 
     }
 
