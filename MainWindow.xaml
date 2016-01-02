@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CampusAssist"
         mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="800" WindowStartupLocation="CenterScreen">
+        Title="校园助手" Height="600" Width="800" WindowStartupLocation="CenterScreen">
     <Window.Background>
         <ImageBrush ImageSource="img/background.png" Stretch="UniformToFill"/>
     </Window.Background>
@@ -14,5 +14,9 @@
         <DockPanel Height="130" Background="#FFB70031">
             <Image x:Name="image" HorizontalAlignment="Center" VerticalAlignment="Center" Source="img/xiaohui.png" Width="120"/>
         </DockPanel>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+            <Label Content="欢迎您！"/>
+            <Label x:Name="nameLbl" Content="[用户名]"/>
+        </StackPanel>
     </StackPanel>
 </Window>
