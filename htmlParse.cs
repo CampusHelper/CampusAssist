@@ -273,5 +273,85 @@ namespace CampusAssist
             }
             return rtnStr;                         //交易日期 交易时间 交易名称 交易金额 余额 刷卡地点 卡操作计数
         }
+        /*
+           获取课程表信息
+       */
+        public static string[] getSchedule(string htmlstr)
+        {
+            Regex re = new Regex(@"activity = new TaskActivity([\s\S]*?)activity =");
+            MatchCollection mc = re.Matches(htmlstr);
+            int num = mc.Count;
+            string[] rtnStr = new string[num + 1];
+            string tmp = "";
+
+            for (int n = 0; n <= num; n++)
+            {
+                string result;
+                int i;
+                if (n == num)
+                {
+                    char[] record = new char[2];
+                    int charcount = 0;
+                    foreach (char c in tmp)
+                    {
+                        if (c >= '0' && c <= '9')
+                        {
+                            record[charcount] = c;
+                            charcount++;
+                        }
+                    }
+                    string lastSearch = "index =" + record[0] + "\\*unitCount\\+" + record[1];
+                    re = new Regex(lastSearch + @"([\s\S]*?)table0\.marshalTable");
+                    result = re.Match(htmlstr).Value;
+                    i = result.IndexOf("activity =") + 1;
+                    result = result.Substring(i);
+                }
+                else
+                {
+                    result = mc[n].Value;
+                }
+
+                re = new Regex(@",""\w{0,5}""");
+                tmp = re.Match(result).Value;
+                i = tmp.IndexOf('"') + 1;
+                tmp = tmp.Substring(i);
+                i = tmp.IndexOf('"');
+                tmp = tmp.Substring(0, i);
+                rtnStr[n] = tmp;                //老师姓名
+
+                re = new Regex(@""".{0,30}\(.{17}\)""");
+                MatchCollection mctmp = re.Matches(result);
+                tmp = mctmp[1].Value;
+                i = tmp.IndexOf('"') + 1;
+                tmp = tmp.Substring(i);
+                i = tmp.IndexOf('"');
+                tmp = tmp.Substring(0, i);
+                rtnStr[n] += " " + tmp;                //课程名称及编号
+
+                re = new Regex(@"""\w{0,20}""");
+                mctmp = re.Matches(result);
+                tmp = mctmp[3].Value;
+                i = tmp.IndexOf('"') + 1;
+                tmp = tmp.Substring(i);
+                i = tmp.IndexOf('"');
+                tmp = tmp.Substring(0, i);
+                rtnStr[n] += " " + tmp;                //上课地点
+
+                re = new Regex(@"index =\d\*unitCount\+\d");
+                mctmp = re.Matches(result);
+                int count = mctmp.Count;
+                tmp = mctmp[0].Value;
+                foreach (char c in tmp)
+                {
+                    if (c >= '0' && c <= '9')
+                    {
+                        rtnStr[n] += " " + (char)(c + 1);
+                    }
+                }
+                rtnStr[n] += " " + count.ToString();
+            }
+
+            return rtnStr;                  //老师姓名 课程名称及编号 上课地点 星期几 第几节课开始 上几节课
+        }
     }
 }
