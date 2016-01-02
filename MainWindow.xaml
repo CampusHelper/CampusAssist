@@ -5,25 +5,90 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CampusAssist"
         mc:Ignorable="d"
-        Title="校园助手" Height="600" Width="800" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded" FontSize="16" MinHeight="600" MinWidth="800">
+        Title="校园助手" Height="600" Width="800" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded" FontSize="24" MinHeight="600" MinWidth="800">
     <Window.Background>
         <ImageBrush ImageSource="img/background.png" Stretch="UniformToFill"/>
     </Window.Background>
     <StackPanel>
         <!--Top image-->
-        <DockPanel Height="130" Background="#FFB70031">
-            <Image x:Name="image" HorizontalAlignment="Center" VerticalAlignment="Center" Source="img/xiaohui.png" Width="120"/>
+        <DockPanel Height="60" Background="#FFB70031">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Image x:Name="image" HorizontalAlignment="Center" VerticalAlignment="Center" Source="img/xiaohui.png" Width="50"/>
+                <Label Content="欢迎使用华师大校园助手" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White"/>
+            </StackPanel>
         </DockPanel>
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-            <Label Content="欢迎您！"/>
-            <Label x:Name="nameLbl" Content="[用户名]" Foreground="#FF1239E8"/>
-            <Label Content="您的ip地址: "/>
-            <Label x:Name="ipLbl" Content="[ip地址]" Foreground="#FF1239E8"/>
-            <Label Content="您当前有"/>
-            <Label x:Name="mailCntLbl" Content="[邮件数量]" Foreground="#FF1239E8"/>
-            <Label Content="封邮件, "/>
-            <Label x:Name="unreadCntLbl" Content="[未读邮件数量]" Foreground="#FF1239E8"/>
-            <Label Content="封未读邮件"/>
-        </StackPanel>
+        <Grid>
+            <Grid.ColumnDefinitions >
+                <ColumnDefinition Width="200"></ColumnDefinition>
+                <ColumnDefinition Width="auto"></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <GridSplitter Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Center" Width="6"></GridSplitter>
+        </Grid>
+        <TabControl x:Name="tabControl" TabStripPlacement="Left" Background="Transparent" SelectionChanged="TabControl_SelectionChanged">
+            <TabItem Name="tab1">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="今天是"/>
+                        <Label x:Name="dateLbl" Content="[时间]" Foreground="#FF1239E8"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="欢迎您！"/>
+                        <Label x:Name="nameLbl" Content="[用户名]" Foreground="#FF1239E8"/>
+                        <Label Content="您的ip地址: "/>
+                        <Label x:Name="ipLbl" Content="[ip地址]" Foreground="#FF1239E8"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="您当前有"/>
+                        <Label x:Name="mailCntLbl" Content="[邮件数量]" Foreground="#FF1239E8"/>
+                        <Label Content="封邮件, "/>
+                        <Label x:Name="unreadCntLbl" Content="[未读邮件数量]" Foreground="#FF1239E8"/>
+                        <Label Content="封未读邮件"/>
+                    </StackPanel>
+                </StackPanel>
+                <TabItem.Header>
+                    <Label>主界面</Label>
+                </TabItem.Header>
+            </TabItem>
+            <TabItem>
+                <TabItem.Header>
+                    <Label>教务通知</Label>
+                </TabItem.Header>
+                <Grid x:Name="announcementGrid">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="200"/>
+                    </Grid.ColumnDefinitions>
+                </Grid>
+            </TabItem>
+            <TabItem>
+                <TabItem.Header>
+                    <Label>邮件系统</Label>
+                </TabItem.Header>
+            </TabItem>
+            <TabItem>
+                <TabItem.Header>
+                    <Label>我的课表</Label>
+                </TabItem.Header>
+            </TabItem>
+            <TabItem>
+                <TabItem.Header>
+                    <Label>我的成绩</Label>
+                </TabItem.Header>
+            </TabItem>
+            <TabItem>
+                <TabItem.Header>
+                    <Label>考试安排</Label>
+                </TabItem.Header>
+            </TabItem>
+            <TabItem>
+                <TabItem.Header>
+                    <Label>消费查询</Label>
+                </TabItem.Header>
+            </TabItem>
+        </TabControl>
     </StackPanel>
 </Window>
