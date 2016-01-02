@@ -117,7 +117,7 @@ namespace CampusAssist
             int cnt = 0;
             redict = url;
             string html;
-            HttpWebResponse res;
+            HttpWebResponse res = null;
             do
             {
                 Uri captchaUri = new Uri(redict);
@@ -125,7 +125,14 @@ namespace CampusAssist
                 request.Accept = "*/*";
                 request.UserAgent = requestUA;
                 request.CookieContainer = cookies;
-                res = (HttpWebResponse)request.GetResponse();
+                try
+                {
+                    res = (HttpWebResponse)request.GetResponse();
+                }catch(Exception e)
+                {
+                    MessageBox.Show(e.Message);
+                }
+                
             } while (needRedict(res, out redict, out html, encoding) && ++cnt <= MAX_REDICT);
             return html;
         }

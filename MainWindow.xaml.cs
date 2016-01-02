@@ -62,6 +62,7 @@ namespace CampusAssist
                             Grid.SetRow(lbl, i);
                             Grid.SetColumn(lbl, 0);
                             lbl = new Label();
+                            lbl.Foreground = Brushes.Blue;
                             lbl.Content = cur[1];
                             announcementGrid.Children.Add(lbl);
                             Grid.SetRow(lbl, i);
@@ -71,8 +72,8 @@ namespace CampusAssist
                     case 6:
                         page = web.getDocument("http://portal.ecnu.edu.cn/eapdomain/neudcp/sso/sso_ecard_xxcx.jsp", Encoding.Default);
                         string[] bal = HtmlParse.getBalance(page);
-                        balanceLbl.Content = bal[0];
-                        statusLbl.Content = bal[1];
+                        balanceLbl.Content = bal[1];
+                        statusLbl.Content = bal[0];
                         break;
                     default:
                         announcementGrid.Children.RemoveRange(0, announcementGrid.Children.Count);

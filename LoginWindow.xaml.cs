@@ -24,7 +24,15 @@ namespace CampusAssist
         public LoginWindow()
         {
             InitializeComponent();
-            web = new WebProcess(ref captchaImg);
+            try
+            {
+                web = new WebProcess(ref captchaImg);
+            }catch
+            {
+                MessageBox.Show("网络故障.");
+                Close();
+            }
+            
         }
 
         private void onExit(object sender, RoutedEventArgs e)
