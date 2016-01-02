@@ -20,11 +20,11 @@ namespace CampusAssist
     /// </summary>
     public partial class LoginWindow : Window
     {
-        webProcess web;
+        WebProcess web;
         public LoginWindow()
         {
             InitializeComponent();
-            web = new webProcess(ref captchaImg);
+            web = new WebProcess(ref captchaImg);
         }
 
         private void onExit(object sender, RoutedEventArgs e)

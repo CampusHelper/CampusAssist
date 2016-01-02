@@ -12,11 +12,11 @@ using System.Windows.Media.Imaging;
 
 namespace CampusAssist
 {
-    class webProcess
+    class WebProcess
     {
         CookieContainer cookies;
         string requestUA = "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.1; Trident/5.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; InfoPath.2; BOIE9;ZHCN)";
-        public webProcess(ref System.Windows.Controls.Image img)
+        public WebProcess(ref System.Windows.Controls.Image img)
         {
             Uri captchaUri = new Uri("https://portal1.ecnu.edu.cn/cas/Captcha.jpg");
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(captchaUri);

@@ -66,7 +66,8 @@
     <Compile Include="Email.Designer.cs">
       <DependentUpon>Email.cs</DependentUpon>
     </Compile>
-    <Compile Include="webProcess.cs" />
+    <Compile Include="HtmlParse.cs" />
+    <Compile Include="WebProcess.cs" />
     <Page Include="LoginWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

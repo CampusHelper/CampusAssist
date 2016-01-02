@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 
 namespace CampusAssist
 {
-    class htmlParse
+    class HtmlParse
     {
         /*
           获取姓名，IP，收件箱数量，未读邮件数量
