@@ -20,7 +20,7 @@ namespace CampusAssist
     /// </summary>
     public partial class LoginWindow : Window
     {
-        WebProcess web;
+        private WebProcess web;
         public LoginWindow()
         {
             InitializeComponent();
@@ -36,7 +36,7 @@ namespace CampusAssist
         {
             if (web.login(userID.Text, password.Password, captcha.Text))
             {
-                MainWindow wd = new MainWindow();
+                MainWindow wd = new MainWindow(web);
                 wd.Show();
                 Close();
             }

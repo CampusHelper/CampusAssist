@@ -12,9 +12,11 @@ using System.Windows.Media.Imaging;
 
 namespace CampusAssist
 {
-    class WebProcess
+    public class WebProcess
     {
         CookieContainer cookies;
+        const int MAX_REDICT = 10;
+        string redict;
         string requestUA = "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.1; Trident/5.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; InfoPath.2; BOIE9;ZHCN)";
         public WebProcess(ref System.Windows.Controls.Image img)
         {
@@ -59,8 +61,8 @@ namespace CampusAssist
                 stream.Write(postdatabyte, 0, postdatabyte.Length);
             }
             HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-            string redict;
-            if (loginSuccess(response,out redict))
+            string html;
+            if (needRedict(response, out redict,out html))
             {
                 ret = true;
             }
@@ -69,6 +71,7 @@ namespace CampusAssist
 
         private string responseToString(HttpWebResponse res, Encoding encoding)
         {
+            cookies.Add(res.Cookies);
             StreamReader r = new StreamReader(res.GetResponseStream(), encoding);
             string html = r.ReadToEnd();
             return html;
@@ -82,13 +85,14 @@ namespace CampusAssist
             string ticket = html.Substring(start, end - start);
             return ticket;
         }
-        private bool loginSuccess(HttpWebResponse res,out string redict)
+
+        private bool needRedict(HttpWebResponse res, out string redict,out string html)
         {
-            string html = responseToString(res, Encoding.Default);
+            html = responseToString(res, Encoding.Default);
             int start = html.IndexOf("http://");
             int end = html.IndexOf("\"", start);
             redict = html.Substring(start, end - start);
-            return html.IndexOf("LT_") < 0;
+            return html.Contains("CAS认证转向");
         }
 
         public static BitmapSource ChangeBitmapToBitmapSource(Bitmap bmp)
@@ -103,6 +107,29 @@ namespace CampusAssist
                 returnSource = null;
             }
             return returnSource;
+        }
+
+        public string getDocument(string url, Encoding encoding)
+        {
+            int cnt = 0;
+            redict = url;
+            string html;
+            HttpWebResponse res;
+            do
+            {
+                Uri captchaUri = new Uri(redict);
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(captchaUri);
+                request.Accept = "*/*";
+                request.UserAgent = requestUA;
+                request.CookieContainer = cookies;
+                res = (HttpWebResponse)request.GetResponse();
+            } while (needRedict(res, out redict,out html) && ++cnt <= MAX_REDICT);
+            return html;
+        }
+
+        public string doRedict()
+        {
+            return getDocument(redict, Encoding.UTF8);
         }
     }
 }

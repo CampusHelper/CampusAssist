@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CampusAssist"
         mc:Ignorable="d"
-        Title="校园助手" Height="600" Width="800" WindowStartupLocation="CenterScreen">
+        Title="校园助手" Height="600" Width="800" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded" FontSize="16" MinHeight="600" MinWidth="800">
     <Window.Background>
         <ImageBrush ImageSource="img/background.png" Stretch="UniformToFill"/>
     </Window.Background>
@@ -16,7 +16,14 @@
         </DockPanel>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
             <Label Content="欢迎您！"/>
-            <Label x:Name="nameLbl" Content="[用户名]"/>
+            <Label x:Name="nameLbl" Content="[用户名]" Foreground="#FF1239E8"/>
+            <Label Content="您的ip地址: "/>
+            <Label x:Name="ipLbl" Content="[ip地址]" Foreground="#FF1239E8"/>
+            <Label Content="您当前有"/>
+            <Label x:Name="mailCntLbl" Content="[邮件数量]" Foreground="#FF1239E8"/>
+            <Label Content="封邮件, "/>
+            <Label x:Name="unreadCntLbl" Content="[未读邮件数量]" Foreground="#FF1239E8"/>
+            <Label Content="封未读邮件"/>
         </StackPanel>
     </StackPanel>
 </Window>

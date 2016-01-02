@@ -19,9 +19,23 @@ namespace CampusAssist
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
+        private WebProcess web;
+        public MainWindow(WebProcess _web)
         {
             InitializeComponent();
+            web = _web;
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            string mainPage = web.doRedict();
+            string[] info = HtmlParse.getInfo(mainPage);
+            nameLbl.Content = info[0];
+            ipLbl.Content = info[1];
+            string html = web.getDocument("http://applicationidc.ecnu.edu.cn/ecnuidc/sso/ssoemailchh.jsp", Encoding.UTF8);
+            info = HtmlParse.getEmail(html);
+            mailCntLbl.Content = info[0];
+            unreadCntLbl.Content = info[1];
         }
     }
 }
