@@ -25,14 +25,14 @@
                 <RowDefinition/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <TextBox Grid.Column="1" Grid.Row="0" x:Name="userID" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalAlignment="Left" Foreground="#FF999999" Background="#66C1C1C1" BorderBrush="{x:Null}" MaxLines="1" CaretBrush="Black" SelectionBrush="#FF5B5B5B" Width="177" Height="36" Margin="0,0,-21,0"/>
+            <TextBox Grid.Column="1" Grid.Row="0" x:Name="userID" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalAlignment="Left" Foreground="#FF999999" Background="#66C1C1C1" BorderBrush="{x:Null}" MaxLines="1" CaretBrush="Black" SelectionBrush="#FF5B5B5B" Width="192" Height="36"/>
             <Label  Grid.Column="0" Grid.Row="0" x:Name="labelID" Content="学号" HorizontalAlignment="Left" VerticalAlignment="Top" Height="36" FontSize="21.333" Width="109"/>
-            <PasswordBox Grid.Column="1" Grid.Row="1" x:Name="password" VerticalAlignment="Top" HorizontalAlignment="Left" Foreground="#FF999999" Background="#66C1C1C1" BorderBrush="{x:Null}" CaretBrush="Black" SelectionBrush="#FF5B5B5B" Width="177" Height="36" Margin="0,0,-21,0"/>
+            <PasswordBox Grid.Column="1" Grid.Row="1" x:Name="password" VerticalAlignment="Top" HorizontalAlignment="Left" Foreground="#FF999999" Background="#66C1C1C1" BorderBrush="{x:Null}" CaretBrush="Black" SelectionBrush="#FF5B5B5B" Width="192" Height="36" Margin="0,0,-21,0"/>
             <Label Grid.Column="0" Grid.Row="1" x:Name="labelPassWd" Content="密码" VerticalAlignment="Top" Height="36" FontSize="21.333"/>
             <Label Grid.Column="0" Grid.Row="2" x:Name="labelCaptcha" Content="验证码" HorizontalAlignment="Left" VerticalAlignment="Top" Height="36" FontSize="21.333" Width="74"/>
             <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="1">
                 <TextBox x:Name="captcha" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalAlignment="Left" Foreground="#FF999999" Background="#66C1C1C1" BorderBrush="{x:Null}" MaxLines="1" CaretBrush="Black" SelectionBrush="#FF5B5B5B" Width="102"/>
-                <Image x:Name="captchaImg" HorizontalAlignment="Left" VerticalAlignment="Top" Source="img/captcha.png" Height="36" Width="112"/>
+                <Image x:Name="captchaImg" HorizontalAlignment="Left" VerticalAlignment="Top" Height="36" Width="112"/>
             </StackPanel>
         </Grid>
 

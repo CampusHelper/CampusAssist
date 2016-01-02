@@ -20,9 +20,11 @@ namespace CampusAssist
     /// </summary>
     public partial class LoginWindow : Window
     {
+        webProcess web;
         public LoginWindow()
         {
             InitializeComponent();
+            web = new webProcess(ref captchaImg);
         }
 
         private void onExit(object sender, RoutedEventArgs e)
@@ -32,17 +34,17 @@ namespace CampusAssist
 
         private void onLogin(object sender, RoutedEventArgs e)
         {
-            System.Net.CookieContainer ck = new System.Net.CookieContainer();
-            System.Collections.ArrayList l = WebReauest.GetHtmlData("http://www.baidu.com", ck);
-            for(int i = 0; i < l.Count; i++)
+            if (web.login(userID.Text, password.Password, captcha.Text))
             {
-                MessageBox.Show(l[i].ToString());
+                MainWindow wd = new MainWindow();
+                wd.Show();
+                Close();
             }
-            
-            MainWindow wd = new MainWindow();
-            wd.Show();
-            Close();
-            
+            else
+            {
+                MessageBox.Show("登录失败","失败");
+            }
+
         }
 
         private void onEmail(object sender, RoutedEventArgs e)
