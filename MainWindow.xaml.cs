@@ -44,11 +44,12 @@ namespace CampusAssist
         {
             if(e.Source is TabControl)
             {
+                string page;
                 switch (tabControl.SelectedIndex)
                 {
                     // 教务通知
                     case 1:
-                        string page = web.getDocument("http://www.jwc.ecnu.edu.cn/",Encoding.UTF8);
+                        page = web.getDocument("http://www.jwc.ecnu.edu.cn/",Encoding.UTF8);
                         string[] info = HtmlParse.getAnnounce(page);
                         for(int i = 0; i < info.Length; i++)
                         {
@@ -66,6 +67,15 @@ namespace CampusAssist
                             Grid.SetRow(lbl, i);
                             Grid.SetColumn(lbl, 1);
                         }
+                        break;
+                    case 6:
+                        page = web.getDocument("http://portal.ecnu.edu.cn/eapdomain/neudcp/sso/sso_ecard_xxcx.jsp", Encoding.Default);
+                        string[] bal = HtmlParse.getBalance(page);
+                        balanceLbl.Content = bal[0];
+                        statusLbl.Content = bal[1];
+                        break;
+                    default:
+                        announcementGrid.Children.RemoveRange(0, announcementGrid.Children.Count);
                         break;
                 }
             }

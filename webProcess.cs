@@ -62,7 +62,7 @@ namespace CampusAssist
             }
             HttpWebResponse response = (HttpWebResponse)request.GetResponse();
             string html;
-            if (needRedict(response, out redict, out html,Encoding.Default))
+            if (needRedict(response, out redict, out html, Encoding.Default))
             {
                 ret = true;
             }
@@ -91,8 +91,11 @@ namespace CampusAssist
             html = responseToString(res, encoding);
             int start = html.IndexOf("http://");
             int end = html.IndexOf("\"", start);
+            if (end < 0)
+                end = html.IndexOf('\'', start);
             redict = html.Substring(start, end - start);
-            return html.Contains("CAS认证转向");
+
+            return html.Contains(".location.href");
         }
 
         public static BitmapSource ChangeBitmapToBitmapSource(Bitmap bmp)

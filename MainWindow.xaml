@@ -50,17 +50,14 @@
                     <Label>主界面</Label>
                 </TabItem.Header>
             </TabItem>
-            <TabItem>
+            <TabItem  FontSize="16">
                 <TabItem.Header>
-                    <Label>教务通知</Label>
+                    <Label FontSize="24">教务通知</Label>
                 </TabItem.Header>
                 <Grid x:Name="announcementGrid">
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto"/>
-                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="100"/>
                     </Grid.ColumnDefinitions>
                 </Grid>
             </TabItem>
@@ -88,6 +85,16 @@
                 <TabItem.Header>
                     <Label>消费查询</Label>
                 </TabItem.Header>
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="您的校园卡余额为"/>
+                        <Label x:Name="balanceLbl" Content="[余额]" Foreground="#FF1239E8"/>
+                        <Label Content="元"/>
+                        <Label Content="卡状态： "/>
+                        <Label x:Name="statusLbl" Content="[状态]" Foreground="#FF1239E8"/>
+                    </StackPanel>
+
+                </StackPanel>
             </TabItem>
         </TabControl>
     </StackPanel>
