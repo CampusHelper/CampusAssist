@@ -67,6 +67,7 @@
       <DependentUpon>Email.cs</DependentUpon>
     </Compile>
     <Compile Include="HtmlParse.cs" />
+    <Compile Include="Timer.cs" />
     <Compile Include="WebProcess.cs" />
     <Page Include="LoginWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
