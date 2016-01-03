@@ -131,7 +131,7 @@ namespace CampusAssist
 */
         public static string[] getExam(string htmlstr)
         {
-            Regex re = new Regex(@"height=""23px"">([\s]*?)<td>.{17}</td>([\s]*?)<td>\w{0,20}</td>");
+            Regex re = new Regex(@"height=""23px"">([\s]*?)<td>.{17}</td>([\s]*?)<td>.{0,20}</td>");
             MatchCollection mc = re.Matches(htmlstr);
             int num = mc.Count;
             string[] rtnStr = new string[num];
