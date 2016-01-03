@@ -30,6 +30,7 @@ namespace CampusAssist
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            /* 一以下最好开新的线程处理否则会阻塞 */
             string mainPage = web.doRedict();
             string[] info = HtmlParse.getInfo(mainPage);
             nameLbl.Content = info[0];
@@ -38,6 +39,7 @@ namespace CampusAssist
             info = HtmlParse.getEmail(html);
             mailCntLbl.Content = info[0];
             unreadCntLbl.Content = info[1];
+            /* 以上 */
             dateLbl.Content = DateTime.Now.ToLongDateString().ToString() + " " + weekdays[Convert.ToInt32(DateTime.Now.DayOfWeek)];
             notify = new System.Windows.Forms.NotifyIcon();
             notify.Icon = new System.Drawing.Icon("icon.ico");
@@ -55,14 +57,20 @@ namespace CampusAssist
                     case 1:
                         page = web.getDocument("http://www.jwc.ecnu.edu.cn/",Encoding.UTF8);
                         string[] info = HtmlParse.getAnnounce(page);
+
+                        // 动态向announcementGrid添加元素
                         for(int i = 0; i < info.Length; i++)
                         {
                             Label lbl = new Label();
                             string[] cur = info[i].Split(' ');
                             lbl.Content = cur[0];
+
+                            // 添加新的一行
                             RowDefinition rd = new RowDefinition();
                             announcementGrid.RowDefinitions.Add(rd);
+                            // 添加元素
                             announcementGrid.Children.Add(lbl);
+                            //指定行与列
                             Grid.SetRow(lbl, i);
                             Grid.SetColumn(lbl, 0);
                             lbl = new Label();
@@ -82,6 +90,7 @@ namespace CampusAssist
                         statusLbl.Content = bal[0];
                         break;
                     default:
+                        // 需要将不用的清除否则会重叠绘制
                         announcementGrid.Children.RemoveRange(0, announcementGrid.Children.Count);
                         break;
                 }

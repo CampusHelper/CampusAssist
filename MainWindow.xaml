@@ -17,14 +17,8 @@
                 <Label Content="欢迎使用华师大校园助手" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White"/>
             </StackPanel>
         </DockPanel>
-        <Grid>
-            <Grid.ColumnDefinitions >
-                <ColumnDefinition Width="200"></ColumnDefinition>
-                <ColumnDefinition Width="auto"></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-            <GridSplitter Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Center" Width="6"></GridSplitter>
-        </Grid>
+        
+        <!--以下是TabConttrol控件 每一个TabItem代表一个模块-->
         <TabControl x:Name="tabControl" TabStripPlacement="Left" Background="Transparent" SelectionChanged="TabControl_SelectionChanged">
             <TabItem Name="tab1">
                 <StackPanel>
@@ -50,37 +44,47 @@
                     <Label>主界面</Label>
                 </TabItem.Header>
             </TabItem>
+            
+            <!--教务通知-->
             <TabItem  FontSize="16">
                 <TabItem.Header>
                     <Label FontSize="24">教务通知</Label>
                 </TabItem.Header>
+                <!--用Grid布局指定表格类型的布局-->
                 <Grid x:Name="announcementGrid">
+                    <!--一个列定义 添加行的代码参考C#代码-->
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="100"/>
                     </Grid.ColumnDefinitions>
                 </Grid>
             </TabItem>
+            
             <TabItem>
                 <TabItem.Header>
                     <Label>邮件系统</Label>
                 </TabItem.Header>
             </TabItem>
+            
             <TabItem>
                 <TabItem.Header>
                     <Label>我的课表</Label>
                 </TabItem.Header>
             </TabItem>
+            
             <TabItem>
                 <TabItem.Header>
                     <Label>我的成绩</Label>
                 </TabItem.Header>
             </TabItem>
+            
             <TabItem>
                 <TabItem.Header>
                     <Label>考试安排</Label>
                 </TabItem.Header>
             </TabItem>
+            
+            <!--校园卡信息模块-->
             <TabItem>
                 <TabItem.Header>
                     <Label>消费查询</Label>
