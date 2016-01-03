@@ -91,8 +91,11 @@ namespace CampusAssist
         // 判断是否发生重定向
         private bool needRedict(HttpWebResponse res, out string redict, out string html, Encoding encoding)
         {
+            redict = "";
             html = responseToString(res, encoding);
             int start = html.IndexOf("http://");
+            if (start < 0)
+                return false;
             int end = html.IndexOf("\"", start);
             if (end < 0)
                 end = html.IndexOf('\'', start);
