@@ -346,41 +346,25 @@ namespace CampusAssist
             return rtnStr;                  //老师姓名 课程名称及编号 上课地点 星期几 第几节课开始 上几节课
         }
         /*
-            获取成绩
-        */
+             获取成绩
+         */
         public static string[] getScores(string htmlstr)
         {
-            Regex re = new Regex(@"><tr>([\s\S]*?)</tr><tr>");
+            Regex re = new Regex(@"<tr>([\s\S]*?)</tr>");
             MatchCollection mc = re.Matches(htmlstr);
             int num = mc.Count;
-            string[] rtnStr = new string[num];
-            for (int n = 0; n < num; n++)
+            string[] rtnStr = new string[num - 1];
+            for (int n = 1; n < num; n++)
             {
                 string result = mc[n].Value;
 
-                re = new Regex(@"<td>.{11}</td>");
+                re = new Regex(@">.{0,30}</a>");
                 string tmp = re.Match(result).Value;
                 int i = tmp.IndexOf('>') + 1;
                 tmp = tmp.Substring(i);
                 i = tmp.IndexOf('<');
                 tmp = tmp.Substring(0, i);
-                rtnStr[n] = tmp;                //学年 学期
-
-                re = new Regex(@"<td>.{14}</td>");
-                tmp = re.Match(result).Value;
-                i = tmp.IndexOf('>') + 1;
-                tmp = tmp.Substring(i);
-                i = tmp.IndexOf('<');
-                tmp = tmp.Substring(0, i);
-                rtnStr[n] += "" + tmp;                //课程编号
-
-                re = new Regex(@">.{0,30}</a>");
-                tmp = re.Match(result).Value;
-                i = tmp.IndexOf('>') + 1;
-                tmp = tmp.Substring(i);
-                i = tmp.IndexOf('<');
-                tmp = tmp.Substring(0, i);
-                rtnStr[n] += " " + tmp;                //课程名称
+                rtnStr[n - 1] = tmp;                //课程名称
 
                 re = new Regex(@"</td><td>\w{3,10}</td>");
                 tmp = re.Match(result).Value;
@@ -388,23 +372,23 @@ namespace CampusAssist
                 tmp = tmp.Substring(i);
                 i = tmp.IndexOf('<');
                 tmp = tmp.Substring(0, i);
-                rtnStr[n] += " " + tmp;                //课程分类
+                rtnStr[n - 1] += " " + tmp;                //课程分类
 
-                re = new Regex(@"</td>\s+<td>\d</td>");
+                re = new Regex(@"</td>\s+<td>.{1,3}</td>");
                 tmp = re.Match(result).Value;
                 i = tmp.IndexOf("<td>") + 4;
                 tmp = tmp.Substring(i);
                 i = tmp.IndexOf('<');
                 tmp = tmp.Substring(0, i);
-                rtnStr[n] += " " + tmp;                //学分
+                rtnStr[n - 1] += " " + tmp;                //学分
 
-                re = new Regex(@"<td style=.+\d+.+([\s\S]*?)</td>");
+                re = new Regex(@"<td style=.+.{1,3}.+([\s\S]*?)</td>");
                 tmp = re.Match(result).Value;
                 i = tmp.IndexOf(">") + 11;
                 tmp = tmp.Substring(i);
                 i = tmp.IndexOf('\r');
                 tmp = tmp.Substring(0, i);
-                rtnStr[n] += " " + tmp;                //成绩
+                rtnStr[n - 1] += " " + tmp;                //成绩
 
                 re = new Regex(@"<td style=.+\w{1,2}.+([\s\S]*?)</td><td>");
                 tmp = re.Match(result).Value;
@@ -412,7 +396,7 @@ namespace CampusAssist
                 tmp = tmp.Substring(i);
                 i = tmp.IndexOf('\r');
                 tmp = tmp.Substring(0, i);
-                rtnStr[n] += " " + tmp;                //等级成绩
+                rtnStr[n - 1] += " " + tmp;                //等级成绩
 
                 re = new Regex(@"</td><td>\s+.{1,3}\s+([\s\S]*?)</td>([\s\S]*?)</tr>");
                 tmp = re.Match(result).Value;
@@ -420,9 +404,9 @@ namespace CampusAssist
                 tmp = tmp.Substring(i);
                 i = tmp.IndexOf('\r');
                 tmp = tmp.Substring(0, i);
-                rtnStr[n] += " " + tmp;                //绩点
+                rtnStr[n - 1] += " " + tmp;                //绩点
             }
-            return rtnStr;                            //学年 学期 课程编号 课程名称 课程类别 学分 总评成绩 等级成绩 绩点
+            return rtnStr;                            //课程名称 课程类别 学分 总评成绩 等级成绩 绩点
         }
     }
 }
