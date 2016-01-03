@@ -116,9 +116,26 @@
                         <Label Content="消费" Grid.Column="3" Grid.Row="0" Foreground="#FF1239E8"/>
                         <Label Content="金额" Grid.Column="4" Grid.Row="0" Foreground="#FF1239E8"/>
                         <Label Content="地点" Grid.Column="5" Grid.Row="0" Foreground="#FF1239E8"/>
-                    </Grid>                    
+                    </Grid>
                 </StackPanel>
+            </TabItem>
 
+            <TabItem>
+                <TabItem.Header>
+                    <Label>消息</Label>
+                </TabItem.Header>
+            </TabItem>
+
+            <TabItem>
+                <TabItem.Header>
+                    <Label>设置</Label>
+                </TabItem.Header>
+            </TabItem>
+
+            <TabItem>
+                <TabItem.Header>
+                    <Label>关于</Label>
+                </TabItem.Header>
             </TabItem>
         </TabControl>
     </StackPanel>

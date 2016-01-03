@@ -101,13 +101,12 @@ namespace CampusAssist
                             for (int j = 0; j < 6; j++)
                             {
                                 Label lbl = new Label();
-                                lbl.FontSize = 12;
+                                lbl.FontSize = 16;
                                 lbl.Content = cur[j];
                                 costGrid.Children.Add(lbl);
                                 Grid.SetRow(lbl, i+1);
                                 Grid.SetColumn(lbl, j);
                             }
-
                             
                         }
 
