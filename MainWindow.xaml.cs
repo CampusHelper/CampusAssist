@@ -21,6 +21,7 @@ namespace CampusAssist
     {
         private WebProcess web;
         string[] weekdays = { "星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六" };
+        System.Windows.Forms.NotifyIcon notify;
         public MainWindow(WebProcess _web)
         {
             InitializeComponent();
@@ -38,6 +39,9 @@ namespace CampusAssist
             mailCntLbl.Content = info[0];
             unreadCntLbl.Content = info[1];
             dateLbl.Content = DateTime.Now.ToLongDateString().ToString() + " " + weekdays[Convert.ToInt32(DateTime.Now.DayOfWeek)];
+            notify = new System.Windows.Forms.NotifyIcon();
+            notify.Icon = new System.Drawing.Icon("icon.ico");
+            notify.Click += new EventHandler(reSize);
         }
 
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -69,6 +73,8 @@ namespace CampusAssist
                             Grid.SetColumn(lbl, 1);
                         }
                         break;
+
+                    // 校园卡信息
                     case 6:
                         page = web.getDocument("http://portal.ecnu.edu.cn/eapdomain/neudcp/sso/sso_ecard_xxcx.jsp", Encoding.Default);
                         string[] bal = HtmlParse.getBalance(page);
@@ -80,6 +86,26 @@ namespace CampusAssist
                         break;
                 }
             }
+        }
+
+        private void Window_StateChanged(object sender, EventArgs e)
+        {
+            if (WindowState == WindowState.Minimized)
+            {
+                ShowInTaskbar = false;
+                notify.Visible = true;
+                notify.BalloonTipText = "ECNU校园助手已隐藏到托盘";
+                notify.BalloonTipTitle = "ECNU校园助手";
+                notify.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+                notify.ShowBalloonTip(1000);
+            }
+        }
+
+        private void reSize(object sender,EventArgs e)
+        {
+            notify.Visible = false;
+            WindowState = WindowState.Normal;
+            ShowInTaskbar = true;
         }
     }
 }

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CampusAssist"
         mc:Ignorable="d"
-        Title="校园助手" Height="600" Width="800" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded" FontSize="24" MinHeight="600" MinWidth="800">
+        Title="校园助手" Height="600" Width="800" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded" FontSize="24" MinHeight="600" MinWidth="800" StateChanged="Window_StateChanged">
     <Window.Background>
         <ImageBrush ImageSource="img/background02.jpg"/>
     </Window.Background>
@@ -93,8 +93,15 @@
                         <Label Content="卡状态："/>
                         <Label x:Name="statusLbl" Content="[状态]" Foreground="#FF1239E8"/>
                     </StackPanel>
-
+                    <Label Content="以下是您最近的校园卡消费记录"/>
+                    <Grid x:Name="costGrid">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="100"/>
+                        </Grid.ColumnDefinitions>
+                    </Grid>                    
                 </StackPanel>
+
             </TabItem>
         </TabControl>
     </StackPanel>
