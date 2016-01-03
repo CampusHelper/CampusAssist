@@ -127,8 +127,8 @@ namespace CampusAssist
         }
 
         /*
-           获取考试安排
-       */
+   获取考试安排
+*/
         public static string[] getExam(string htmlstr)
         {
             Regex re = new Regex(@"height=""23px"">([\s]*)?<td>.{17}</td>([\s]*)?<td>\w{0,20}</td>");
@@ -180,6 +180,13 @@ namespace CampusAssist
                             rtnStr[n] += token[j];
                     }
 
+                    i = tmp.IndexOf(token);
+                    int k = tmp.IndexOf("[考试情况尚未发布]");
+                    if (k > i)
+                    {
+                        rtnStr[n] += " [考试情况尚未发布]";
+                        continue;
+                    }
                     re = new Regex(@"<a href=.+>\w{0,20}</a>");
                     token = re.Match(tmp).Value;
                     i = token.IndexOf('>') + 1;
