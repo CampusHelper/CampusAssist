@@ -33,6 +33,7 @@ namespace CampusAssist
             img.Source = ChangeBitmapToBitmapSource(sourcebm);
         }
 
+        //登录认证
         public bool login(string username, string password, string captcha)
         {
             // 获取验证码ticket
@@ -77,6 +78,7 @@ namespace CampusAssist
             return html;
         }
 
+        // 获取CAS授权信息
         private string getCASTicket(HttpWebResponse res)
         {
             string html = responseToString(res, Encoding.Default);
@@ -86,6 +88,7 @@ namespace CampusAssist
             return ticket;
         }
 
+        // 判断是否发生重定向
         private bool needRedict(HttpWebResponse res, out string redict, out string html, Encoding encoding)
         {
             html = responseToString(res, encoding);
@@ -98,7 +101,7 @@ namespace CampusAssist
             return html.Contains(".location.href");
         }
 
-        public static BitmapSource ChangeBitmapToBitmapSource(Bitmap bmp)
+        private static BitmapSource ChangeBitmapToBitmapSource(Bitmap bmp)
         {
             BitmapSource returnSource;
             try
@@ -112,6 +115,7 @@ namespace CampusAssist
             return returnSource;
         }
 
+        // 【常用】获取指定url的全部页面
         public string getDocument(string url, Encoding encoding)
         {
             int cnt = 0;
@@ -137,6 +141,7 @@ namespace CampusAssist
             return html;
         }
 
+        // 首次登录需要重定向一次
         public string doRedict()
         {
             return getDocument(redict, Encoding.UTF8);

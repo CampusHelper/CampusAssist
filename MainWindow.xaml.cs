@@ -31,7 +31,7 @@ namespace CampusAssist
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             /* 一以下最好开新的线程处理否则会阻塞 */
-            string mainPage = web.doRedict();
+            string mainPage = web.doRedict();           // 首次进入需要重定向一次
             string[] info = HtmlParse.getInfo(mainPage);
             nameLbl.Content = info[0];
             ipLbl.Content = info[1];
@@ -55,7 +55,10 @@ namespace CampusAssist
                 {
                     // 教务通知
                     case 1:
+                        // 抓整个网页已经封装宰了web.getDocument中 直接调用即可获取整个网页
                         page = web.getDocument("http://www.jwc.ecnu.edu.cn/",Encoding.UTF8);
+
+                        // 用已经实现好的HtmlParse中的相关函数获取需要的信息, 请参考HtmlParse
                         string[] info = HtmlParse.getAnnounce(page);
 
                         // 动态向announcementGrid添加元素
