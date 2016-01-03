@@ -91,6 +91,38 @@ namespace CampusAssist
                         string[] bal = HtmlParse.getBalance(page);
                         balanceLbl.Content = bal[1];
                         statusLbl.Content = bal[0];
+
+                        page = web.getDocument("http://www.ecard.ecnu.edu.cn/Ecard/cqmoney.aspx", Encoding.Default);
+                        string[] consume = HtmlParse.getConsume(page);
+                        // 动态向announcementGrid添加元素
+                        for (int i = 0; i < consume.Length; i++)
+                        {
+                            Label lbl = new Label();
+                            string[] cur = consume[i].Split(' ');
+                            lbl.Content = cur[0];
+                            lbl.FontSize = 12;
+                            // 添加新的一行
+                            RowDefinition rd = new RowDefinition();
+                            costGrid.RowDefinitions.Add(rd);
+                            // 添加元素
+                            costGrid.Children.Add(lbl);
+                            //指定行与列
+                            Grid.SetRow(lbl, i);
+                            Grid.SetColumn(lbl, 0);
+
+                            for (int j = 1; j <= 5; j++)
+                            {
+                                lbl = new Label();
+                                lbl.FontSize = 12;
+                                lbl.Content = cur[j];
+                                costGrid.Children.Add(lbl);
+                                Grid.SetRow(lbl, i);
+                                Grid.SetColumn(lbl, j);
+                            }
+
+                            
+                        }
+
                         break;
                     default:
                         // 需要将不用的清除否则会重叠绘制

@@ -98,10 +98,15 @@
                         <Label x:Name="statusLbl" Content="[状态]" Foreground="#FF1239E8"/>
                     </StackPanel>
                     <Label Content="以下是您最近的校园卡消费记录"/>
+                    <Label Content="日期        时间       名称        金额       余额        刷卡地点"></Label>
                     <Grid x:Name="costGrid">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1.5*"/>
                         </Grid.ColumnDefinitions>
                     </Grid>                    
                 </StackPanel>

@@ -262,16 +262,8 @@ namespace CampusAssist
                 i = token.IndexOf('<');
                 token = token.Substring(0, i);
                 rtnStr[n] += " " + token;         //刷卡地点
-
-                re = new Regex(@"Label11"">\d+</span>");
-                token = re.Match(tmp).Value;
-                i = token.IndexOf('>') + 1;
-                token = token.Substring(i);
-                i = token.IndexOf('<');
-                token = token.Substring(0, i);
-                rtnStr[n] += " " + token;         //卡操作计数
             }
-            return rtnStr;                         //交易日期 交易时间 交易名称 交易金额 余额 刷卡地点 卡操作计数
+            return rtnStr;                         //交易日期 交易时间 交易名称 交易金额 余额 刷卡地点
         }
         /*
            获取课程表信息
