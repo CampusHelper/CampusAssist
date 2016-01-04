@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -35,22 +36,16 @@ namespace CampusAssist
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            /* 一以下最好开新的线程处理否则会阻塞 */
-            string mainPage = web.doRedict();           // 首次进入需要重定向一次
-            string[] info = HtmlParse.getInfo(mainPage);
-            nameLbl.Content = info[0];
-            ipLbl.Content = info[1];
-            string html = web.getDocument("http://applicationidc.ecnu.edu.cn/ecnuidc/sso/ssoemailchh.jsp", Encoding.Default);
-            info = HtmlParse.getEmail(html);
-            mailCntLbl.Content = info[0];
-            unreadCntLbl.Content = info[1];
-            /* 以上 */
+/* 一以下最好开新的线程处理否则会阻塞 */
+            Thread oThread = new Thread(init);
+            oThread.Start();
+            /* 以上 */            
             dateLbl.Content = DateTime.Now.ToLongDateString().ToString() + " " + weekdays[Convert.ToInt32(DateTime.Now.DayOfWeek)];
             notify = new System.Windows.Forms.NotifyIcon();
             notify.Icon = new System.Drawing.Icon("icon.ico");
             notify.Click += new EventHandler(reSize);
-
             onInit = false;
+
         }
 
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -92,7 +87,10 @@ namespace CampusAssist
                             Grid.SetColumn(lbl, 1);
                         }
                         break;
-
+                    // 课程表
+                    case 3:
+                        semesterClassChanged(null, null);
+                        break;
                     // 成绩
                     case 4:
                         //semesterChanged(null, null);
@@ -105,27 +103,8 @@ namespace CampusAssist
 
                     // 校园卡信息
                     case 6:
-                        page = web.getDocument("http://portal.ecnu.edu.cn/eapdomain/neudcp/sso/sso_ecard_xxcx.jsp", Encoding.Default);
-                        string[] bal = HtmlParse.getBalance(page);
-                        balanceLbl.Content = bal[1];
-                        statusLbl.Content = bal[0];
-
-                        page = web.getDocument("http://www.ecard.ecnu.edu.cn/Ecard/cqmoney.aspx", Encoding.Default);
-                        string[] consume = HtmlParse.getConsume(page);
-                        for (int i = 0; i < consume.Length; i++)
-                        {
-                            string[] cur = consume[i].Split(' ');
-                            costGrid.RowDefinitions.Add(new RowDefinition());
-                            for (int j = 0; j < 6; j++)
-                            {
-                                Label lbl = new Label();
-                                lbl.FontSize = 16;
-                                lbl.Content = cur[j];
-                                costGrid.Children.Add(lbl);
-                                Grid.SetRow(lbl, i + 1);
-                                Grid.SetColumn(lbl, j);
-                            }
-                        }
+                        Thread balanceThread = new Thread(updateBalanceRecord);
+                        balanceThread.Start();
                         break;
                 }
             }
@@ -197,6 +176,86 @@ namespace CampusAssist
                     }
                 }
             }
+        }
+
+        private void semesterClassChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (!onInit)
+            {
+                examTimeGrid.Children.RemoveRange(6, examTimeGrid.Children.Count - 6);
+                int semeId = semesterId[yearClassCombo.SelectedIndex, semesterClassCombo.SelectedIndex];
+                string url = String.Format("http://applicationnewjw.ecnu.edu.cn/eams/courseTableForStd!courseTable.action?ignoreHead=1&setting.kind=std&semester.id={0}&ids={1}", semeId, 260366);
+                string page = web.getDocument(url, Encoding.UTF8);
+                string[] schedule = HtmlParse.getSchedule(page);
+                for (int i = 0; i <schedule.Length; i++)
+                {
+                    MessageBox.Show(schedule[i]);
+                }
+            }
+        }
+
+        private void init()
+        {
+            string mainPage = web.doRedict();           // 首次进入需要重定向一次
+            string[] info = HtmlParse.getInfo(mainPage);
+            Dispatcher.Invoke((Action)delegate {
+                nameLbl.Content = info[0];
+                ipLbl.Content = info[1];
+            });
+            string html = web.getDocument("http://applicationidc.ecnu.edu.cn/ecnuidc/sso/ssoemailchh.jsp", Encoding.Default);
+            info = HtmlParse.getEmail(html);
+            Dispatcher.Invoke((Action)delegate {
+                mailCntLbl.Content = info[0];
+                unreadCntLbl.Content = info[1];
+            });
+            string balance = getBalance();
+            if (double.Parse(balance) < 10)
+            {
+                Dispatcher.Invoke((Action)delegate {
+                    balanceMainLbl.Content = "你的校园卡余额不足，请及时充值！";
+                });
+            }
+        }
+
+        private string getBalance()
+        {
+            string page = web.getDocument("http://portal.ecnu.edu.cn/eapdomain/neudcp/sso/sso_ecard_xxcx.jsp", Encoding.Default);
+            string[] bal = HtmlParse.getBalance(page);
+            return bal[1];
+        }
+
+        private void updateBalanceRecord()
+        {
+            string page = web.getDocument("http://portal.ecnu.edu.cn/eapdomain/neudcp/sso/sso_ecard_xxcx.jsp", Encoding.Default);
+            string[] bal = HtmlParse.getBalance(page);
+            Dispatcher.Invoke((Action)delegate
+            {
+                balanceLbl.Content = bal[1];
+                statusLbl.Content = bal[0];
+            });
+
+            page = web.getDocument("http://www.ecard.ecnu.edu.cn/Ecard/cqmoney.aspx", Encoding.Default);
+            string[] consume = HtmlParse.getConsume(page);
+            Dispatcher.Invoke((Action)delegate {
+                recordProcessLbl.Content = "[正在获取中...]";
+                costGrid.Children.RemoveRange(6, costGrid.Children.Count - 6);
+                for (int i = 0; i < consume.Length; i++)
+                {
+                    string[] cur = consume[i].Split(' ');
+                    costGrid.RowDefinitions.Add(new RowDefinition());
+                    for (int j = 0; j < 6; j++)
+                    {
+                        Label lbl = new Label();
+                        lbl.FontSize = 16;
+                        lbl.Content = cur[j];
+                        costGrid.Children.Add(lbl);
+                        Grid.SetRow(lbl, i + 1);
+                        Grid.SetColumn(lbl, j);
+                    }
+                }
+                recordProcessLbl.Content = "";
+            });
+            
         }
     }
 }

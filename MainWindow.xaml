@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:CampusAssist"
         xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="CampusAssist.MainWindow"
         mc:Ignorable="d"
-        Title="校园助手" Height="600" Width="800" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded" FontSize="24" MinHeight="600" MinWidth="800" StateChanged="Window_StateChanged">
+        Title="校园助手" Height="768" Width="1024" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded" FontSize="24" MinHeight="600" MinWidth="800" StateChanged="Window_StateChanged">
     <Window.Background>
         <ImageBrush ImageSource="img/background02.jpg"/>
     </Window.Background>
@@ -25,7 +25,7 @@
                 <TabItem.Header>
                     <Label Content="主界面"/>
                 </TabItem.Header>
-                <StackPanel>
+                <StackPanel x:Name="mainPanel">
                     <StackPanel Orientation="Horizontal">
                         <Label Content="今天是"/>
                         <Label x:Name="dateLbl" Content="[时间]" Foreground="#FF1239E8"/>
@@ -42,6 +42,13 @@
                         <Label Content="封邮件, "/>
                         <Label x:Name="unreadCntLbl" Content="[未读邮件数量]" Foreground="#FF1239E8"/>
                         <Label Content="封未读邮件"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="您今天的课程有"/>
+                        <Label x:Name="classLbl" Content="[课程]" Foreground="#FF1239E8"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label x:Name="balanceMainLbl" Content="" Foreground="#FF1239E8"/>
                     </StackPanel>
                 </StackPanel>
             </TabItem>
@@ -74,21 +81,23 @@
                 <StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <Label Content="学年:"/>
-                        <ComboBox x:Name="yearClassCombo" SelectedIndex="0" SelectionChanged="semesterChanged" >
+                        <ComboBox x:Name="yearClassCombo" SelectedIndex="0" SelectionChanged="semesterClassChanged" >
                             <System:String>15-16</System:String>
                             <System:String>14-15</System:String>
                             <System:String>13-14</System:String>
                             <System:String>12-13</System:String>
                         </ComboBox>
                         <Label Content="学期:"/>
-                        <ComboBox x:Name="semesterClassCombo" SelectedIndex="0" SelectionChanged="semesterChanged" >
+                        <ComboBox x:Name="semesterClassCombo" SelectedIndex="0" SelectionChanged="semesterClassChanged" >
                             <System:String>第一学期</System:String>
                             <System:String>第二学期</System:String>
                         </ComboBox>
                     </StackPanel>
                     <Grid x:Name="classGrid">
+                        <!--<Border Grid.Column="0" Grid.Row="0" BorderBrush="Red" BorderThickness="2" CornerRadius="5"/>-->
+
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="1.2*"/>
+                            <ColumnDefinition Width="0.7*"/>
                             <ColumnDefinition Width="1*"/>
                             <ColumnDefinition Width="1*"/>
                             <ColumnDefinition Width="1*"/>
@@ -97,6 +106,17 @@
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
                         </Grid.RowDefinitions>
                         <Label Content="节次" Grid.Column="0" Grid.Row="0" Foreground="#FF1239E8"/>
                         <Label Content="星期一" Grid.Column="1" Grid.Row="0" Foreground="#FF1239E8"/>
@@ -104,6 +124,17 @@
                         <Label Content="星期三" Grid.Column="3" Grid.Row="0" Foreground="#FF1239E8"/>
                         <Label Content="星期四" Grid.Column="4" Grid.Row="0" Foreground="#FF1239E8"/>
                         <Label Content="星期五" Grid.Column="5" Grid.Row="0" Foreground="#FF1239E8"/>
+                        <Label Content="第一节" Grid.Column="0" Grid.Row="1" Foreground="#FF1239E8"/>
+                        <Label Content="第二节" Grid.Column="0" Grid.Row="2" Foreground="#FF1239E8"/>
+                        <Label Content="第三节" Grid.Column="0" Grid.Row="3" Foreground="#FF1239E8"/>
+                        <Label Content="第四节" Grid.Column="0" Grid.Row="4" Foreground="#FF1239E8"/>
+                        <Label Content="第五节" Grid.Column="0" Grid.Row="5" Foreground="#FF1239E8"/>
+                        <Label Content="第六节" Grid.Column="0" Grid.Row="6" Foreground="#FF1239E8"/>
+                        <Label Content="第七节" Grid.Column="0" Grid.Row="7" Foreground="#FF1239E8"/>
+                        <Label Content="第八节" Grid.Column="0" Grid.Row="8" Foreground="#FF1239E8"/>
+                        <Label Content="第九节" Grid.Column="0" Grid.Row="9" Foreground="#FF1239E8"/>
+                        <Label Content="第十节" Grid.Column="0" Grid.Row="10" Foreground="#FF1239E8"/>
+                        <Label Content="第十一节" Grid.Column="0" Grid.Row="11" Foreground="#FF1239E8"/>
                     </Grid>
                 </StackPanel>
             </TabItem>
@@ -125,7 +156,7 @@
                         <ComboBox x:Name="semesterCombo" SelectedIndex="0" SelectionChanged="semesterChanged" >
                             <System:String>第一学期</System:String>
                             <System:String>第二学期</System:String>
-                        </ComboBox>                        
+                        </ComboBox>
                     </StackPanel>
                     <Grid x:Name="examGrid">
                         <Grid.ColumnDefinitions>
@@ -174,7 +205,7 @@
                             <System:String>缓考</System:String>
                             <System:String>期中考</System:String>
                             <System:String>大英测试</System:String>
-                        </ComboBox>                        
+                        </ComboBox>
                     </StackPanel>
                     <Grid x:Name="examTimeGrid">
                         <Grid.ColumnDefinitions>
@@ -211,7 +242,11 @@
                         <Label Content="卡状态："/>
                         <Label x:Name="statusLbl" Content="[状态]" Foreground="#FF1239E8"/>
                     </StackPanel>
-                    <Label Content="以下是您最近的校园卡消费记录"/>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="以下是您最近的校园卡消费记录"/>
+                        <Label x:Name="recordProcessLbl" Content="[正在获取中...]" Foreground="#FF1239E8"/>
+                    </StackPanel>
+                    
                     <Grid x:Name="costGrid">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="1*"/>
@@ -232,18 +267,6 @@
                         <Label Content="地点" Grid.Column="5" Grid.Row="0" Foreground="#FF1239E8"/>
                     </Grid>
                 </StackPanel>
-            </TabItem>
-
-            <TabItem>
-                <TabItem.Header>
-                    <Label Content="消息"/>
-                </TabItem.Header>
-            </TabItem>
-
-            <TabItem>
-                <TabItem.Header>
-                    <Label Content="设置"/>
-                </TabItem.Header>
             </TabItem>
 
             <TabItem>
