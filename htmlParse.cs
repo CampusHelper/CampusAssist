@@ -274,8 +274,8 @@ namespace CampusAssist
             return rtnStr;                         //交易日期 交易时间 交易名称 交易金额 余额 刷卡地点
         }
         /*
-           获取课程表信息
-       */
+            获取课程表信息
+        */
         public static string[] getSchedule(string htmlstr)
         {
             Regex re = new Regex(@"new TaskActivity([\s\S]*?)activity =");
@@ -368,32 +368,33 @@ namespace CampusAssist
                     }
                 }
                 rtnStr[n] += "|" + count.ToString();
-                i = rtnStr[n].IndexOf('|')+1;
+                i = rtnStr[n].IndexOf('|') + 1;
                 string buf = rtnStr[n].Substring(i);
                 i = buf.IndexOf('|');
                 string w = buf.Substring(0, i);
 
-                i = buf.IndexOf('|');
-                string t = buf.Substring(i) + 1;
-                i = t.IndexOf('|')+1;
+                i = buf.IndexOf('|') + 1;
+                string t = buf.Substring(i);
+                i = t.IndexOf('|') + 1;
                 t = t.Substring(i);
-                for(int m = 0;m< n;m++)
+                t = t.Substring(0, 3);
+                for (int m = 0; m < n; m++)
                 {
                     i = rtnStr[m].IndexOf('|') + 1;
                     buf = rtnStr[m].Substring(i);
                     i = buf.IndexOf('|');
                     string wM = buf.Substring(0, i);
 
-                    i = buf.IndexOf('|');
-                    string tM = buf.Substring(i) + 1;
+                    i = buf.IndexOf('|') + 1;
+                    string tM = buf.Substring(i);
                     i = tM.IndexOf('|') + 1;
                     tM = tM.Substring(i);
-
-                    if(t == tM && String.Compare(w,wM) >= 0)
+                    tM = tM.Substring(0, 3);
+                    if (t == tM && String.Compare(w, wM) < 0)
                     {
-                        rtnStr[m] += "|冲突"; 
+                        rtnStr[m] += "|冲突";
                     }
-                    else if(t == tM && String.Compare(w, wM) < 0)
+                    else if (t == tM && String.Compare(w, wM) >= 0)
                     {
                         rtnStr[n] += "|冲突";
                     }
