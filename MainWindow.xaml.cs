@@ -301,8 +301,14 @@ namespace CampusAssist
             if (!mailock  /*mail.getNew(10) > 0*/)
             {
                 mailock = true;
-                mail.getEmail(recentMailCnt);
-                updateMailList();
+                try {
+                    mail.getEmail(recentMailCnt);
+                    updateMailList();
+                }
+                catch(Exception e)
+                {
+                    MessageBox.Show(e.Message);
+                }
                 mailock = false;
                 Dispatcher.Invoke((Action)delegate
                 {

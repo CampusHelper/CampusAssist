@@ -109,7 +109,7 @@
                         <Label Content="主题:"/>
                         <Label x:Name="themeLbl" Foreground="#FF1239E8"/>
                     </StackPanel>
-                    <RichTextBox x:Name="body" VerticalScrollBarVisibility="Visible" Background="#33FFFFFF" IsDocumentEnabled="True" MaxHeight="300" IsReadOnlyCaretVisible="True" />
+                    <RichTextBox x:Name="body" VerticalScrollBarVisibility="Visible" Background="#33FFFFFF" IsDocumentEnabled="True" MaxHeight="300" IsReadOnly="True" />
                 </StackPanel>
 
             </TabItem>
