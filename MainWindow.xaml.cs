@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -23,6 +24,7 @@ namespace CampusAssist
         private WebProcess web;
         bool onInit;
         string[] weekdays = { "星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六" };
+        int weekToday;
         byte[,] color = { { 96, 192, 230 },
                         { 147, 209, 98 },
                         { 136, 172, 234 },
@@ -58,12 +60,20 @@ namespace CampusAssist
             Thread oThread = new Thread(init);
             oThread.Start();
             /* 以上 */
-            dateLbl.Content = DateTime.Now.ToLongDateString().ToString() + " " + weekdays[Convert.ToInt32(DateTime.Now.DayOfWeek)];
+            oThread = new Thread(threadClass);
+            oThread.Start();
+
+
+            weekToday = Convert.ToInt32(DateTime.Now.DayOfWeek);
+            dateLbl.Content = DateTime.Now.ToLongDateString().ToString() + " " + weekdays[weekToday];
             notify = new System.Windows.Forms.NotifyIcon();
             notify.Icon = new System.Drawing.Icon("icon.ico");
             notify.Click += new EventHandler(reSize);
-            onInit = false;
-
+            if ((string)classLbl.Content == "")
+            {
+                classLbl.Content = "[暂无]";
+            }
+            
         }
 
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -75,7 +85,7 @@ namespace CampusAssist
                 {
                     // 教务通知
                     case 1:
-                        announcementGrid.Children.RemoveRange(0, announcementGrid.Children.Count);
+                        announcementGrid.Children.RemoveRange(2, announcementGrid.Children.Count - 2);
                         // 抓整个网页已经封装宰了web.getDocument中 直接调用即可获取整个网页
                         page = web.getDocument("http://www.jwc.ecnu.edu.cn/", Encoding.UTF8);
 
@@ -95,13 +105,13 @@ namespace CampusAssist
                             // 添加元素
                             announcementGrid.Children.Add(lbl);
                             //指定行与列
-                            Grid.SetRow(lbl, i);
+                            Grid.SetRow(lbl, i + 1);
                             Grid.SetColumn(lbl, 0);
                             lbl = new Label();
                             lbl.Foreground = Brushes.Blue;
                             lbl.Content = cur[1];
                             announcementGrid.Children.Add(lbl);
-                            Grid.SetRow(lbl, i);
+                            Grid.SetRow(lbl, i + 1);
                             Grid.SetColumn(lbl, 1);
                         }
                         break;
@@ -210,31 +220,7 @@ namespace CampusAssist
         {
             if (!onInit)
             {
-                classGrid.Children.RemoveRange(17, classGrid.Children.Count - 17);
-
-                int semeId = semesterId[yearClassCombo.SelectedIndex, semesterClassCombo.SelectedIndex];
-                int ids = 260366;
-                int week = weekCombo.SelectedIndex + 1;
-                string url = String.Format("http://applicationnewjw.ecnu.edu.cn/eams/courseTableForStd!courseTable.action?ignoreHead=1&setting.kind=std&semester.id={0}&ids={1}&startWeek={2}", semeId, ids, week);
-                string page = web.getDocument(url, Encoding.UTF8);
-                string[] schedule = HtmlParse.getSchedule(page, week);
-                for (int i = 0; i < schedule.Length; i++)
-                {
-                    string[] cur = schedule[i].Split('|');
-                    if (cur.Length == 7) continue;
-                    TextBlock lbl = new TextBlock();
-                    lbl.Text = string.Format("{0}\n({1} {2})", cur[0], cur[1], cur[2]);
-                    lbl.FontSize = 20;
-                    lbl.Background = new SolidColorBrush(Color.FromRgb(color[i % 8, 0], color[i % 8, 1], color[i % 8, 2]));
-                    lbl.TextWrapping = TextWrapping.Wrap;
-                    classGrid.Children.Add(lbl);
-                    int y = int.Parse(cur[3]);
-                    int x = int.Parse(cur[4]);
-                    int d = int.Parse(cur[5]);
-                    Grid.SetRow(lbl, x);
-                    Grid.SetColumn(lbl, y);
-                    Grid.SetRowSpan(lbl, d);
-                }
+                threadClass();
             }
         }
 
@@ -262,7 +248,6 @@ namespace CampusAssist
                     balanceMainLbl.Content = "你的校园卡余额不足10元，请及时充值！";
                 });
             }
-            //mail.getEmail(10);
         }
 
         private string getBalance()
@@ -319,6 +304,10 @@ namespace CampusAssist
                 mail.getEmail(recentMailCnt);
                 updateMailList();
                 mailock = false;
+                Dispatcher.Invoke((Action)delegate
+                {
+                    lastMailTime.Content = DateTime.Now.ToString();
+                });
             }
         }
 
@@ -346,6 +335,8 @@ namespace CampusAssist
                     btn.FontSize = 16;
                     btn.Click += new RoutedEventHandler(onSubject);
                     btn.Content = mail.getSubject(i);
+                    BrushConverter brushConverter = new BrushConverter();
+                    btn.Background = (Brush)brushConverter.ConvertFromString("#00000000");
                     mailGrid.Children.Add(btn);
                     Grid.SetRow(btn, recentMailCnt - i);
                     Grid.SetColumn(btn, 1);
@@ -364,7 +355,10 @@ namespace CampusAssist
         private void onMail(object sender, RoutedEventArgs e)
         {
             refreshMailBtn.IsEnabled = false;
-            refreshMail();
+            Thread mailThread = new Thread(refreshMail);
+            mailThread.Start();
+            //refreshMail();
+            
             refreshMailBtn.IsEnabled = true;
         }
 
@@ -374,7 +368,55 @@ namespace CampusAssist
             senderLbl.Content = string.Format("{0}({1})", mail.getFromName(d), mail.getFromAddress(d));
             timeLbl.Content = mail.getTime(d);
             themeLbl.Content = mail.getSubject(d);
-            bodyLbl.Content = mail.getBody(d);
+            string mailbody = mail.getBody(d);
+
+            System.Windows.Forms.WebBrowser webBrowser = new System.Windows.Forms.WebBrowser();
+            webBrowser.Visible = false;
+            webBrowser.DocumentText = mailbody;
+            webBrowser.Document.Write(mailbody);
+            body.Document.Blocks.Clear();
+            body.AppendText(webBrowser.Document.Body.OuterText);
+        }
+
+        private void threadClass()
+        {
+            int semeId = 0, ids = 0, week = 0;
+            Dispatcher.Invoke((Action)delegate
+            {
+                classGrid.Children.RemoveRange(17, classGrid.Children.Count - 17);
+                semeId = semesterId[yearClassCombo.SelectedIndex, semesterClassCombo.SelectedIndex];
+                
+                week = weekCombo.SelectedIndex + 1;
+            });
+            ids = 260366 - 39 + int.Parse(username.Substring(9));
+            string url = String.Format("http://applicationnewjw.ecnu.edu.cn/eams/courseTableForStd!courseTable.action?ignoreHead=1&setting.kind=std&semester.id={0}&ids={1}&startWeek={2}", semeId, ids, week);
+            string page = web.getDocument(url, Encoding.UTF8);
+            string[] schedule = HtmlParse.getSchedule(page, week);
+            Dispatcher.Invoke((Action)delegate
+            {
+                for (int i = 0; i < schedule.Length; i++)
+                {
+                    string[] cur = schedule[i].Split('|');
+                    if (cur.Length == 7) continue;
+                    TextBlock lbl = new TextBlock();
+                    lbl.Text = string.Format("{0}\n({1} {2})", cur[0], cur[1], cur[2]);
+                    lbl.FontSize = 20;
+                    lbl.Background = new SolidColorBrush(Color.FromRgb(color[i % 8, 0], color[i % 8, 1], color[i % 8, 2]));
+                    lbl.TextWrapping = TextWrapping.Wrap;
+                    classGrid.Children.Add(lbl);
+                    int y = int.Parse(cur[3]);
+                    int x = int.Parse(cur[4]);
+                    int d = int.Parse(cur[5]);
+                    if (onInit && y == weekToday)
+                    {
+                        classLbl.Content += string.Format("第{0}节-第{1}节 {2} ({3})\n", x, x + d - 1, cur[0], cur[2]);
+                    }
+                    Grid.SetRow(lbl, x);
+                    Grid.SetColumn(lbl, y);
+                    Grid.SetRowSpan(lbl, d);
+                }
+            });
+            onInit = false;
         }
     }
 }

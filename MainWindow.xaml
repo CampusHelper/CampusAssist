@@ -45,8 +45,8 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <Label Content="您今天的课程有"/>
-                        <Label x:Name="classLbl" Content="[课程]" Foreground="#FF1239E8"/>
                     </StackPanel>
+                    <Label x:Name="classLbl" Foreground="#FF1239E8"/>
                     <StackPanel Orientation="Horizontal">
                         <Label x:Name="balanceMainLbl" Content="" Foreground="#FF1239E8"/>
                     </StackPanel>
@@ -54,17 +54,22 @@
             </TabItem>
 
             <!--教务通知-->
-            <TabItem  FontSize="16">
+            <TabItem  FontSize="24">
                 <TabItem.Header>
                     <Label FontSize="24" Content="教务通知"/>
                 </TabItem.Header>
                 <!--用Grid布局指定表格类型的布局-->
-                <Grid x:Name="announcementGrid">
+                <Grid x:Name="announcementGrid" Background="#33FFFFFF">
                     <!--一个列定义 添加行的代码参考C#代码-->
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="200"/>
                     </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Label Content="主题" Grid.Column="0" Grid.Row="0" Foreground="#FF1239E8" FontSize="24"/>
+                    <Label Content="时间" Grid.Column="1" Grid.Row="0" Foreground="#FF1239E8" FontSize="24"/>
                 </Grid>
             </TabItem>
 
@@ -75,11 +80,11 @@
                 <StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <Label Content="上一次收取邮件的时间"/>
-                        <Label x:Name="lastMailTime" Foreground="#FF1239E8"/>
+                        <Label x:Name="lastMailTime" Content="[还没有收取]" Foreground="#FF1239E8"/>
                         <Button x:Name="refreshMailBtn" Content="立即收取" Click="onMail"/>
                         <Label x:Name="MailProcess" Foreground="#FF1239E8"/>
                     </StackPanel>
-                    <Grid x:Name="mailGrid">
+                    <Grid x:Name="mailGrid" Background="#33FFFFFF">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="1*"/>
                             <ColumnDefinition Width="1.5*"/>
@@ -104,12 +109,9 @@
                         <Label Content="主题:"/>
                         <Label x:Name="themeLbl" Foreground="#FF1239E8"/>
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Label Content="正文:"/>
-                    </StackPanel>
-                    <Label x:Name="bodyLbl"/>
+                    <RichTextBox x:Name="body" VerticalScrollBarVisibility="Visible" Background="#33FFFFFF" IsDocumentEnabled="True" MaxHeight="300" />
                 </StackPanel>
-                
+
             </TabItem>
 
             <TabItem>
@@ -158,7 +160,7 @@
                             <System:String>24</System:String>
                         </ComboBox>
                     </StackPanel>
-                    <Grid x:Name="classGrid">
+                    <Grid x:Name="classGrid" Background="#33FFFFFF">
                         <!--<Border Grid.Column="0" Grid.Row="0" BorderBrush="Red" BorderThickness="2" CornerRadius="5"/>-->
 
                         <Grid.ColumnDefinitions>
@@ -223,7 +225,7 @@
                             <System:String>第二学期</System:String>
                         </ComboBox>
                     </StackPanel>
-                    <Grid x:Name="examGrid">
+                    <Grid x:Name="examGrid" Background="#33FFFFFF">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="1.5*"/>
                             <ColumnDefinition Width="1*"/>
@@ -272,7 +274,7 @@
                             <System:String>大英测试</System:String>
                         </ComboBox>
                     </StackPanel>
-                    <Grid x:Name="examTimeGrid">
+                    <Grid x:Name="examTimeGrid" Background="#33FFFFFF">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="1.5*"/>
                             <ColumnDefinition Width="1.2*"/>
@@ -311,8 +313,8 @@
                         <Label Content="以下是您最近的校园卡消费记录"/>
                         <Label x:Name="recordProcessLbl" Content="[正在获取中...]" Foreground="#FF1239E8"/>
                     </StackPanel>
-                    
-                    <Grid x:Name="costGrid">
+
+                    <Grid x:Name="costGrid" Background="#33FFFFFF">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="1*"/>
                             <ColumnDefinition Width="1*"/>
@@ -338,6 +340,10 @@
                 <TabItem.Header>
                     <Label Content="关于"/>
                 </TabItem.Header>
+                <StackPanel Background="#33FFFFFF">
+                    <Label Content="华师大校园助手 V1.0" FontSize="32"/>
+                    <Label Content="制作" FontSize="32"/>
+                </StackPanel>
             </TabItem>
         </TabControl>
     </StackPanel>
