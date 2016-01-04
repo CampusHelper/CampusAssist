@@ -316,6 +316,8 @@ namespace CampusAssist
                 i = tmp.IndexOf('"') + 1;
                 tmp = tmp.Substring(i);
                 i = tmp.IndexOf('"');
+                if (i < 0)
+                    return new string[0];
                 tmp = tmp.Substring(0, i);
                 rtnStr[n] = tmp;                //老师姓名
 
@@ -324,9 +326,44 @@ namespace CampusAssist
                 tmp = mctmp[1].Value;
                 i = tmp.IndexOf('"') + 1;
                 tmp = tmp.Substring(i);
-                i = tmp.IndexOf('"');
+                i = tmp.IndexOf('(');
                 tmp = tmp.Substring(0, i);
-                rtnStr[n] += " " + tmp;                //课程名称及编号
+                rtnStr[n] += " " + tmp;                //课程名称
+
+                re = new Regex(@"""\d{22}");
+                tmp = re.Match(result).Value;
+                i = tmp.IndexOf('"') + 1;
+                tmp = tmp.Substring(i);
+                int start = 0;
+                int end = 0;
+                int j;
+                for (j =1;j<tmp.Length;j++)
+                {
+                    if (tmp[j] == '1')
+                    {
+                        start = j;
+                        break;
+                    }
+                }
+                for (int k = j; k < tmp.Length; k++)
+                {
+                    if (tmp[k] == '0')
+                    {
+                        end = k;
+                        break;
+                    }
+                }
+                string weeks;
+                if(end-start!=1)
+                    weeks = start.ToString() + "-" + end.ToString();
+                else
+                {
+                    if (start % 2 == 0)
+                        weeks = "双周";
+                    else
+                        weeks = "单周";
+                }
+                rtnStr[n] += "#" + weeks;               //课程周数
 
                 re = new Regex(@"""\w{0,20}""");
                 mctmp = re.Matches(result);
@@ -335,7 +372,7 @@ namespace CampusAssist
                 tmp = tmp.Substring(i);
                 i = tmp.IndexOf('"');
                 tmp = tmp.Substring(0, i);
-                rtnStr[n] += " " + tmp;                //上课地点
+                rtnStr[n] += "#" + tmp;                //上课地点
 
                 re = new Regex(@"index =\d\*unitCount\+\d");
                 mctmp = re.Matches(result);
@@ -345,10 +382,10 @@ namespace CampusAssist
                 {
                     if (c >= '0' && c <= '9')
                     {
-                        rtnStr[n] += " " + (char)(c + 1);
+                        rtnStr[n] += "#" + (char)(c + 1);
                     }
                 }
-                rtnStr[n] += " " + count.ToString();
+                rtnStr[n] += "#" + count.ToString();
             }
 
             return rtnStr;                  //老师姓名 课程名称及编号 上课地点 星期几 第几节课开始 上几节课
