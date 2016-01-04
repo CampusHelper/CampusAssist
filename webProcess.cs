@@ -149,5 +149,6 @@ namespace CampusAssist
         {
             return getDocument(redict, Encoding.UTF8);
         }
+
     }
 }

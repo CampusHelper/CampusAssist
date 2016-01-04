@@ -72,6 +72,44 @@
                 <TabItem.Header>
                     <Label Content="邮件系统"/>
                 </TabItem.Header>
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="上一次收取邮件的时间"/>
+                        <Label x:Name="lastMailTime" Foreground="#FF1239E8"/>
+                        <Button x:Name="refreshMailBtn" Content="立即收取" Click="onMail"/>
+                        <Label x:Name="MailProcess" Foreground="#FF1239E8"/>
+                    </StackPanel>
+                    <Grid x:Name="mailGrid">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1.5*"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Label Content="发件人" Grid.Column="0" Grid.Row="0" Foreground="#FF1239E8"/>
+                        <Label Content="主题" Grid.Column="1" Grid.Row="0" Foreground="#FF1239E8"/>
+                        <Label Content="时间" Grid.Column="2" Grid.Row="0" Foreground="#FF1239E8"/>
+                    </Grid>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="发件人:"/>
+                        <Label x:Name="senderLbl" Foreground="#FF1239E8"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="发送时间:"/>
+                        <Label x:Name="timeLbl" Foreground="#FF1239E8"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="主题:"/>
+                        <Label x:Name="themeLbl" Foreground="#FF1239E8"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="正文:"/>
+                    </StackPanel>
+                    <Label x:Name="bodyLbl"/>
+                </StackPanel>
+                
             </TabItem>
 
             <TabItem>
@@ -118,9 +156,6 @@
                             <System:String>22</System:String>
                             <System:String>23</System:String>
                             <System:String>24</System:String>
-                            <System:String>25</System:String>
-                            <System:String>26</System:String>
-                            <System:String>27</System:String>
                         </ComboBox>
                     </StackPanel>
                     <Grid x:Name="classGrid">

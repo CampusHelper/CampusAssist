@@ -34,12 +34,22 @@ namespace CampusAssist
         int[,] semesterId = new int[,] { { 449, 481 }, { 385, 417 }, { 321, 353 }, { 89, 288 } };
         int[] examType = new int[] { 1, 3, 4, 2, 100 };
         System.Windows.Forms.NotifyIcon notify;
-        public MainWindow(WebProcess _web)
+
+        private string username;
+        private string password;
+        POP3Mail mail;
+        bool mailock;
+        int recentMailCnt = 10;
+        public MainWindow(WebProcess _web, string _username, string _password)
         {
             onInit = true;
             web = _web;
+            username = _username;
+            password = _password;
+            mail = new POP3Mail();
+            mail.setAccount(username, password);
+            mailock = false;
             InitializeComponent();
-
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -101,7 +111,7 @@ namespace CampusAssist
                         break;
                     // 成绩
                     case 4:
-                        //semesterChanged(null, null);
+                        semesterChanged(null, null);
                         break;
 
                     // 考试安排
@@ -203,16 +213,19 @@ namespace CampusAssist
                 classGrid.Children.RemoveRange(17, classGrid.Children.Count - 17);
 
                 int semeId = semesterId[yearClassCombo.SelectedIndex, semesterClassCombo.SelectedIndex];
-                string url = String.Format("http://applicationnewjw.ecnu.edu.cn/eams/courseTableForStd!courseTable.action?ignoreHead=1&setting.kind=std&semester.id={0}&ids={1}&startWeek={2}", semeId, 260366, weekCombo.SelectedIndex + 1);
+                int ids = 260366;
+                int week = weekCombo.SelectedIndex + 1;
+                string url = String.Format("http://applicationnewjw.ecnu.edu.cn/eams/courseTableForStd!courseTable.action?ignoreHead=1&setting.kind=std&semester.id={0}&ids={1}&startWeek={2}", semeId, ids, week);
                 string page = web.getDocument(url, Encoding.UTF8);
-                string[] schedule = HtmlParse.getSchedule(page);
+                string[] schedule = HtmlParse.getSchedule(page, week);
                 for (int i = 0; i < schedule.Length; i++)
                 {
-                    string[] cur = schedule[i].Split(' ');
+                    string[] cur = schedule[i].Split('|');
+                    if (cur.Length == 7) continue;
                     TextBlock lbl = new TextBlock();
-                    lbl.Text = cur[1];
+                    lbl.Text = string.Format("{0}\n({1} {2})", cur[0], cur[1], cur[2]);
                     lbl.FontSize = 20;
-                    lbl.Background = new SolidColorBrush(Color.FromRgb(color[i%8, 0], color[i%8, 1], color[i%8, 2]));
+                    lbl.Background = new SolidColorBrush(Color.FromRgb(color[i % 8, 0], color[i % 8, 1], color[i % 8, 2]));
                     lbl.TextWrapping = TextWrapping.Wrap;
                     classGrid.Children.Add(lbl);
                     int y = int.Parse(cur[3]);
@@ -249,6 +262,7 @@ namespace CampusAssist
                     balanceMainLbl.Content = "你的校园卡余额不足10元，请及时充值！";
                 });
             }
+            //mail.getEmail(10);
         }
 
         private string getBalance()
@@ -294,6 +308,73 @@ namespace CampusAssist
                 recordProcessLbl.Content = "";
             });
 
+        }
+
+        // 刷新邮件
+        private void refreshMail()
+        {
+            if (!mailock  /*mail.getNew(10) > 0*/)
+            {
+                mailock = true;
+                mail.getEmail(recentMailCnt);
+                updateMailList();
+                mailock = false;
+            }
+        }
+
+        // 更新邮箱列表
+        private void updateMailList()
+        {
+            Dispatcher.Invoke((Action)delegate
+            {
+                mailGrid.Children.RemoveRange(3, mailGrid.Children.Count - 3);
+            });
+            for (int i = 0; i < recentMailCnt; i++)
+            {
+                Dispatcher.Invoke((Action)delegate
+                {
+                    mailGrid.RowDefinitions.Add(new RowDefinition());
+                    Label lbl = new Label();
+                    lbl.Content = mail.getFromName(i);
+                    lbl.FontSize = 16;
+                    mailGrid.Children.Add(lbl);
+                    Grid.SetRow(lbl, recentMailCnt - i);
+                    Grid.SetColumn(lbl, 0);
+
+                    Button btn = new Button();
+                    btn.Tag = i;
+                    btn.FontSize = 16;
+                    btn.Click += new RoutedEventHandler(onSubject);
+                    btn.Content = mail.getSubject(i);
+                    mailGrid.Children.Add(btn);
+                    Grid.SetRow(btn, recentMailCnt - i);
+                    Grid.SetColumn(btn, 1);
+
+                    lbl = new Label();
+                    lbl.FontSize = 16;
+                    lbl.Content = mail.getTime(i);
+                    mailGrid.Children.Add(lbl);
+                    Grid.SetRow(lbl, recentMailCnt - i);
+                    Grid.SetColumn(lbl, 2);
+                });
+            }
+
+        }
+
+        private void onMail(object sender, RoutedEventArgs e)
+        {
+            refreshMailBtn.IsEnabled = false;
+            refreshMail();
+            refreshMailBtn.IsEnabled = true;
+        }
+
+        private void onSubject(object sender, RoutedEventArgs e)
+        {
+            int d = (int)((Button)sender).Tag;
+            senderLbl.Content = string.Format("{0}({1})", mail.getFromName(d), mail.getFromAddress(d));
+            timeLbl.Content = mail.getTime(d);
+            themeLbl.Content = mail.getSubject(d);
+            bodyLbl.Content = mail.getBody(d);
         }
     }
 }

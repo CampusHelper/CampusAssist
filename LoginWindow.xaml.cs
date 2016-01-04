@@ -44,7 +44,7 @@ namespace CampusAssist
         {
             if (web.login(userID.Text, password.Password, captcha.Text))
             {
-                MainWindow wd = new MainWindow(web);
+                MainWindow wd = new MainWindow(web, userID.Text, password.Password);
                 wd.Show();
                 Close();
             }
