@@ -281,15 +281,23 @@ namespace CampusAssist
             Regex re = new Regex(@"new TaskActivity([\s\S]*?)activity =");
             MatchCollection mc = re.Matches(htmlstr);
             int num = mc.Count;
-            string[] rtnStr = new string[num];
+            if (num == 0)
+                return new string[0];
+            string[] rtnStr = new string[num+1];
             string tmp = "";
-
-            for (int n = 0; n < num; n++)
+            string last = "";
+            for (int n = 0; n < num+1; n++)
             {
                 string result;
                 int i;
-                result = mc[n].Value;
-
+                if(n == num)
+                {
+                    i = htmlstr.IndexOf(last);
+                    result = htmlstr.Substring(i + last.Length) ;
+                }
+                else
+                    result = mc[n].Value;
+                last = result;
                 re = new Regex(@",""\w{0,5}""");
                 tmp = re.Match(result).Value;
                 i = tmp.IndexOf('"') + 1;
@@ -359,7 +367,7 @@ namespace CampusAssist
                 re = new Regex(@"index =\d\*unitCount\+\d");
                 mctmp = re.Matches(result);
                 int count = mctmp.Count;
-                tmp = mctmp[0].Value;
+                tmp = mctmp[0].Value;//
                 foreach (char c in tmp)
                 {
                     if (c >= '0' && c <= '9')
