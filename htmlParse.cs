@@ -276,7 +276,7 @@ namespace CampusAssist
         /*
             获取课程表信息
         */
-        public static string[] getSchedule(string htmlstr)
+        public static string[] getSchedule(string htmlstr ,int weekNum)
         {
             Regex re = new Regex(@"new TaskActivity([\s\S]*?)activity =");
             MatchCollection mc = re.Matches(htmlstr);
@@ -368,37 +368,16 @@ namespace CampusAssist
                     }
                 }
                 rtnStr[n] += "|" + count.ToString();
-                i = rtnStr[n].IndexOf('|') + 1;
+
+                i = rtnStr[n].IndexOf('|')+1;
                 string buf = rtnStr[n].Substring(i);
                 i = buf.IndexOf('|');
-                string w = buf.Substring(0, i);
-
-                i = buf.IndexOf('|') + 1;
-                string t = buf.Substring(i);
-                i = t.IndexOf('|') + 1;
-                t = t.Substring(i);
-                t = t.Substring(0, 3);
-                for (int m = 0; m < n; m++)
-                {
-                    i = rtnStr[m].IndexOf('|') + 1;
-                    buf = rtnStr[m].Substring(i);
-                    i = buf.IndexOf('|');
-                    string wM = buf.Substring(0, i);
-
-                    i = buf.IndexOf('|') + 1;
-                    string tM = buf.Substring(i);
-                    i = tM.IndexOf('|') + 1;
-                    tM = tM.Substring(i);
-                    tM = tM.Substring(0, 3);
-                    if (t == tM && (String.Compare(w, wM) < 0 || w == "1-9"))
-                    {
-                        rtnStr[m] += "|冲突";
-                    }
-                    else if (t == tM && String.Compare(w, wM) >= 0)
-                    {
-                        rtnStr[n] += "|冲突";
-                    }
-                }
+                buf = buf.Substring(0, i);
+                i = buf.IndexOf('-');
+                int weekStart = Convert.ToInt32(buf.Substring(0,i));
+                int weekEnd = Convert.ToInt32(buf.Substring(i+1));
+                if (weekNum < weekStart || weekNum > weekEnd)
+                    rtnStr[n] += "|Invalid";
             }
 
             return rtnStr;                  //老师姓名 课程名称及编号 上课地点 星期几 第几节课开始 上几节课
