@@ -390,7 +390,7 @@ namespace CampusAssist
                     i = tM.IndexOf('|') + 1;
                     tM = tM.Substring(i);
                     tM = tM.Substring(0, 3);
-                    if (t == tM && String.Compare(w, wM) < 0)
+                    if (t == tM && (String.Compare(w, wM) < 0 || w == "1-9"))
                     {
                         rtnStr[m] += "|冲突";
                     }
