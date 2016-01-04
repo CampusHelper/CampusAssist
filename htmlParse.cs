@@ -365,12 +365,14 @@ namespace CampusAssist
             for (int n = 1; n < num; n++)
             {
                 string result = mc[n].Value;
-
+                
                 re = new Regex(@">.{0,30}</a>");
                 string tmp = re.Match(result).Value;
                 int i = tmp.IndexOf('>') + 1;
                 tmp = tmp.Substring(i);
                 i = tmp.IndexOf('<');
+                if (i < 0)
+                    return new string[0];
                 tmp = tmp.Substring(0, i);
                 rtnStr[n - 1] = tmp;                //课程名称
 
@@ -404,7 +406,7 @@ namespace CampusAssist
                 tmp = tmp.Substring(i);
                 i = tmp.IndexOf('\n');
                 tmp = tmp.Substring(0, i);
-                rtnStr[n - 1] += " " + tmp;                //等级成绩
+                rtnStr[n - 1] += tmp;                    //等级成绩
 
                 re = new Regex(@"</td><td>\s+.{1,3}\s+([\s\S]*?)</td>([\s\S]*?)</tr>");
                 tmp = re.Match(result).Value;
