@@ -92,6 +92,36 @@
                             <System:String>第一学期</System:String>
                             <System:String>第二学期</System:String>
                         </ComboBox>
+                        <Label Content="开始周数:"/>
+                        <ComboBox x:Name="weekCombo" SelectedIndex="0" SelectionChanged="semesterClassChanged" >
+                            <System:String>1</System:String>
+                            <System:String>2</System:String>
+                            <System:String>3</System:String>
+                            <System:String>4</System:String>
+                            <System:String>5</System:String>
+                            <System:String>6</System:String>
+                            <System:String>7</System:String>
+                            <System:String>8</System:String>
+                            <System:String>9</System:String>
+                            <System:String>10</System:String>
+                            <System:String>11</System:String>
+                            <System:String>12</System:String>
+                            <System:String>13</System:String>
+                            <System:String>14</System:String>
+                            <System:String>15</System:String>
+                            <System:String>16</System:String>
+                            <System:String>17</System:String>
+                            <System:String>18</System:String>
+                            <System:String>19</System:String>
+                            <System:String>20</System:String>
+                            <System:String>21</System:String>
+                            <System:String>22</System:String>
+                            <System:String>23</System:String>
+                            <System:String>24</System:String>
+                            <System:String>25</System:String>
+                            <System:String>26</System:String>
+                            <System:String>27</System:String>
+                        </ComboBox>
                     </StackPanel>
                     <Grid x:Name="classGrid">
                         <!--<Border Grid.Column="0" Grid.Row="0" BorderBrush="Red" BorderThickness="2" CornerRadius="5"/>-->
@@ -146,7 +176,7 @@
                 <StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <Label Content="学年:"/>
-                        <ComboBox x:Name="yearCombo" SelectedIndex="0" SelectionChanged="semesterChanged" >
+                        <ComboBox x:Name="yearCombo" SelectedIndex="1" SelectionChanged="semesterChanged" >
                             <System:String>15-16</System:String>
                             <System:String>14-15</System:String>
                             <System:String>13-14</System:String>
