@@ -381,11 +381,24 @@ namespace CampusAssist
                 string buf = rtnStr[n].Substring(i);
                 i = buf.IndexOf('|');
                 buf = buf.Substring(0, i);
-                i = buf.IndexOf('-');
-                int weekStart = Convert.ToInt32(buf.Substring(0,i));
-                int weekEnd = Convert.ToInt32(buf.Substring(i+1));
-                if (weekNum < weekStart || weekNum > weekEnd)
-                    rtnStr[n] += "|Invalid";
+                if (buf != "单周" && buf != "双周")
+                {
+                    i = buf.IndexOf('-');
+                    int weekStart = Convert.ToInt32(buf.Substring(0, i));
+                    int weekEnd = Convert.ToInt32(buf.Substring(i + 1));
+                    if (weekNum < weekStart || weekNum > weekEnd)
+                        rtnStr[n] += "|Invalid";
+                }
+                else if(buf == "单周")
+                {
+                    if(weekNum%2 == 0)
+                        rtnStr[n] += "|Invalid";
+                }
+                else if(buf == "双周")
+                {
+                    if (weekNum % 2 != 0)
+                        rtnStr[n] += "|Invalid";
+                }
             }
 
             return rtnStr;                  //老师姓名 课程名称及编号 上课地点 星期几 第几节课开始 上几节课
