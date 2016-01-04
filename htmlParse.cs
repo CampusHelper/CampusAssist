@@ -394,7 +394,7 @@ namespace CampusAssist
                 tmp = re.Match(result).Value;
                 i = tmp.IndexOf(">") + 11;
                 tmp = tmp.Substring(i);
-                i = tmp.IndexOf('\r');
+                i = tmp.IndexOf('\n');
                 tmp = tmp.Substring(0, i);
                 rtnStr[n - 1] += " " + tmp;                //成绩
 
@@ -402,7 +402,7 @@ namespace CampusAssist
                 tmp = re.Match(result).Value;
                 i = tmp.IndexOf(@"</td><td st") + 21;
                 tmp = tmp.Substring(i);
-                i = tmp.IndexOf('\r');
+                i = tmp.IndexOf('\n');
                 tmp = tmp.Substring(0, i);
                 rtnStr[n - 1] += " " + tmp;                //等级成绩
 
@@ -410,7 +410,7 @@ namespace CampusAssist
                 tmp = re.Match(result).Value;
                 i = tmp.IndexOf(@"</td><td>") + 12;
                 tmp = tmp.Substring(i);
-                i = tmp.IndexOf('\r');
+                i = tmp.IndexOf('\n');
                 tmp = tmp.Substring(0, i);
                 rtnStr[n - 1] += " " + tmp;                //绩点
             }
