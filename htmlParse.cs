@@ -278,7 +278,7 @@ namespace CampusAssist
        */
         public static string[] getSchedule(string htmlstr)
         {
-            Regex re = new Regex(@"activity = new TaskActivity([\s\S]*?)activity =");
+            Regex re = new Regex(@"new TaskActivity([\s\S]*?)activity =");
             MatchCollection mc = re.Matches(htmlstr);
             int num = mc.Count;
             string[] rtnStr = new string[num + 1];
