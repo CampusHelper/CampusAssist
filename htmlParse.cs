@@ -284,32 +284,11 @@ namespace CampusAssist
             string[] rtnStr = new string[num + 1];
             string tmp = "";
 
-            for (int n = 0; n <= num; n++)
+            for (int n = 0; n < num; n++)
             {
                 string result;
                 int i;
-                if (n == num)
-                {
-                    char[] record = new char[2];
-                    int charcount = 0;
-                    foreach (char c in tmp)
-                    {
-                        if (c >= '0' && c <= '9')
-                        {
-                            record[charcount] = c;
-                            charcount++;
-                        }
-                    }
-                    string lastSearch = "index =" + record[0] + "\\*unitCount\\+" + record[1];
-                    re = new Regex(lastSearch + @"([\s\S]*?)table0\.marshalTable");
-                    result = re.Match(htmlstr).Value;
-                    i = result.IndexOf("activity =") + 1;
-                    result = result.Substring(i);
-                }
-                else
-                {
-                    result = mc[n].Value;
-                }
+                result = mc[n].Value;
 
                 re = new Regex(@",""\w{0,5}""");
                 tmp = re.Match(result).Value;
@@ -337,7 +316,7 @@ namespace CampusAssist
                 int start = 0;
                 int end = 0;
                 int j;
-                for (j =1;j<tmp.Length;j++)
+                for (j = 1; j < tmp.Length; j++)
                 {
                     if (tmp[j] == '1')
                     {
@@ -354,7 +333,10 @@ namespace CampusAssist
                     }
                 }
                 string weeks;
-                if(end-start!=1)
+                end--;
+                if (end <= 0)
+                    end = tmp.Length - 1;
+                if (end != start)
                     weeks = start.ToString() + "-" + end.ToString();
                 else
                 {
