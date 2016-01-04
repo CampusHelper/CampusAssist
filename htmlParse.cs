@@ -439,18 +439,22 @@ namespace CampusAssist
 
                 re = new Regex(@"<td style=.+\w{1,2}.+([\s\S]*?)</td><td>");
                 tmp = re.Match(result).Value;
-                i = tmp.IndexOf(@"</td><td st") + 21;
+                i = tmp.LastIndexOf("</td><td style=") + 21;
                 tmp = tmp.Substring(i);
                 i = tmp.IndexOf('\n');
                 tmp = tmp.Substring(0, i);
+                if (tmp.Length > 2)
+                    tmp = "F";
                 rtnStr[n - 1] += tmp;                    //等级成绩
 
-                re = new Regex(@"</td><td>\s+.{1,3}\s+([\s\S]*?)</td>([\s\S]*?)</tr>");
+                re = new Regex(@"</td><td>\s+.{1,3}([\s\S]*?)</td>([\s\S]*?)</tr>");
                 tmp = re.Match(result).Value;
-                i = tmp.IndexOf(@"</td><td>") + 12;
+                i = tmp.LastIndexOf(@"</td><td>")+12;
                 tmp = tmp.Substring(i);
                 i = tmp.IndexOf('\n');
                 tmp = tmp.Substring(0, i);
+                if (tmp == "</td>\t\t")
+                    tmp = "";
                 rtnStr[n - 1] += " " + tmp;                //绩点
             }
             return rtnStr;                            //课程名称 课程类别 学分 总评成绩 等级成绩 绩点
