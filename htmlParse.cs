@@ -281,7 +281,7 @@ namespace CampusAssist
             Regex re = new Regex(@"new TaskActivity([\s\S]*?)activity =");
             MatchCollection mc = re.Matches(htmlstr);
             int num = mc.Count;
-            string[] rtnStr = new string[num + 1];
+            string[] rtnStr = new string[num];
             string tmp = "";
 
             for (int n = 0; n < num; n++)
@@ -368,6 +368,36 @@ namespace CampusAssist
                     }
                 }
                 rtnStr[n] += "|" + count.ToString();
+                i = rtnStr[n].IndexOf('|')+1;
+                string buf = rtnStr[n].Substring(i);
+                i = buf.IndexOf('|');
+                string w = buf.Substring(0, i);
+
+                i = buf.IndexOf('|');
+                string t = buf.Substring(i) + 1;
+                i = t.IndexOf('|')+1;
+                t = t.Substring(i);
+                for(int m = 0;m< n;m++)
+                {
+                    i = rtnStr[m].IndexOf('|') + 1;
+                    buf = rtnStr[m].Substring(i);
+                    i = buf.IndexOf('|');
+                    string wM = buf.Substring(0, i);
+
+                    i = buf.IndexOf('|');
+                    string tM = buf.Substring(i) + 1;
+                    i = tM.IndexOf('|') + 1;
+                    tM = tM.Substring(i);
+
+                    if(t == tM && String.Compare(w,wM) >= 0)
+                    {
+                        rtnStr[m] += "|冲突"; 
+                    }
+                    else if(t == tM && String.Compare(w, wM) < 0)
+                    {
+                        rtnStr[n] += "|冲突";
+                    }
+                }
             }
 
             return rtnStr;                  //老师姓名 课程名称及编号 上课地点 星期几 第几节课开始 上几节课
