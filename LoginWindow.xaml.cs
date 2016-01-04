@@ -55,12 +55,6 @@ namespace CampusAssist
 
         }
 
-        private void onEmail(object sender, RoutedEventArgs e)
-        {
-            Email form = new Email();
-            form.Show();
-        }
-
         private void onTimer(object sender, RoutedEventArgs e)
         {
             Timer form = new Timer();

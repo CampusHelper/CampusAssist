@@ -41,8 +41,6 @@
         <!--Button-->
         <StackPanel Orientation="Horizontal" Margin="20 20 20 0" HorizontalAlignment="Center">
             <Button x:Name="loginBtn" Content="登录"  Width="75" BorderThickness="0" Background="#FFB70031" Foreground="White" Click="onLogin"/>
-            <Button x:Name="Test" Content="邮件" Width="75" Click="onEmail"/>
-            <Button x:Name="Test2" Content="timer" Width="20" Click="onTimer"/>
             <Button x:Name="closeBtn" Content="退出" Margin="30 0 0 0" Width="75" IsCancel="True" Click="onExit" BorderThickness="0" Background="#FFB70031" Foreground="White"/>
         </StackPanel>
     </StackPanel>

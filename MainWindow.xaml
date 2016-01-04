@@ -342,7 +342,10 @@
                 </TabItem.Header>
                 <StackPanel Background="#33FFFFFF">
                     <Label Content="华师大校园助手 V1.0" FontSize="32"/>
-                    <Label Content="制作" FontSize="32"/>
+                    <Label Content="Huang Hui" Foreground="#FF1239E8"/>
+                    <Label Content="Peng Yifeng" Foreground="#FF1239E8"/>
+                    <Label Content="He Hongliang" Foreground="#FF1239E8"/>
+                    <Label Content="All rights reserved 2015"/>
                 </StackPanel>
             </TabItem>
         </TabControl>

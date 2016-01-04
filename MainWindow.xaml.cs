@@ -354,12 +354,10 @@ namespace CampusAssist
 
         private void onMail(object sender, RoutedEventArgs e)
         {
-            refreshMailBtn.IsEnabled = false;
+            refreshMailBtn.IsEnabled = !refreshMailBtn.IsEnabled;
             Thread mailThread = new Thread(refreshMail);
             mailThread.Start();
-            //refreshMail();
-            
-            refreshMailBtn.IsEnabled = true;
+            refreshMailBtn.IsEnabled = !refreshMailBtn.IsEnabled;
         }
 
         private void onSubject(object sender, RoutedEventArgs e)
