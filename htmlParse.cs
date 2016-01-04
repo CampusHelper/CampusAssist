@@ -345,7 +345,7 @@ namespace CampusAssist
                     else
                         weeks = "单周";
                 }
-                rtnStr[n] += "#" + weeks;               //课程周数
+                rtnStr[n] += "|" + weeks;               //课程周数
 
                 re = new Regex(@"""\w{0,20}""");
                 mctmp = re.Matches(result);
@@ -354,7 +354,7 @@ namespace CampusAssist
                 tmp = tmp.Substring(i);
                 i = tmp.IndexOf('"');
                 tmp = tmp.Substring(0, i);
-                rtnStr[n] += "#" + tmp;                //上课地点
+                rtnStr[n] += "|" + tmp;                //上课地点
 
                 re = new Regex(@"index =\d\*unitCount\+\d");
                 mctmp = re.Matches(result);
@@ -364,10 +364,10 @@ namespace CampusAssist
                 {
                     if (c >= '0' && c <= '9')
                     {
-                        rtnStr[n] += "#" + (char)(c + 1);
+                        rtnStr[n] += "|" + (char)(c + 1);
                     }
                 }
-                rtnStr[n] += "#" + count.ToString();
+                rtnStr[n] += "|" + count.ToString();
             }
 
             return rtnStr;                  //老师姓名 课程名称及编号 上课地点 星期几 第几节课开始 上几节课
