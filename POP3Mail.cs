@@ -40,9 +40,9 @@ namespace CampusAssist
             mailman.MailHost = "smail.ecnu.edu.cn";
             mailman.PopUsername = userName;
             mailman.PopPassword = pwd;
-            mailList = new mail[emailNum];
+            
 
-            /*Chilkat.StringArray saUidls = null;
+            Chilkat.StringArray saUidls = null;
             //  Get the complete list of UIDLs
             saUidls = mailman.GetUidls();
 
@@ -50,7 +50,7 @@ namespace CampusAssist
             {
                 Console.WriteLine(mailman.LastErrorText);
                 return;
-            }*/
+            }
 
             //  Get the 10 most recent UIDLs
             //  The 1st email is the oldest, the last email is the newest
@@ -72,7 +72,7 @@ namespace CampusAssist
             Chilkat.StringArray saUidls2 = new Chilkat.StringArray();
             for (i = startIdx; i <= n - 1; i++)
             {
-                saUidls2.Append(/*saUidls.GetString(i)*/string.Format("{0}@ecnu.cn", i + 2));
+                saUidls2.Append(saUidls.GetString(i)/*string.Format("{0}@ecnu.cn", i + 2)*/);
             }
 
             //  Download in full the 10 most recent emails:
@@ -87,7 +87,8 @@ namespace CampusAssist
 
             Chilkat.Email email = null;
             int count = 0;
-            for (i = 0; i <= bundle.MessageCount - 1; i++)
+            mailList = new mail[bundle.MessageCount];
+            for (i = 0; i < bundle.MessageCount; i++)
             {
                 email = bundle.GetEmail(i);
                 DateTime time = email.LocalDate;

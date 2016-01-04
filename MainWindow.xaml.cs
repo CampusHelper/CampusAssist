@@ -307,6 +307,8 @@ namespace CampusAssist
                 Dispatcher.Invoke((Action)delegate
                 {
                     lastMailTime.Content = DateTime.Now.ToString();
+                    refreshMailBtn.IsEnabled = !refreshMailBtn.IsEnabled;
+                    refreshMailBtn.Content = "立即收取";
                 });
             }
         }
@@ -355,9 +357,9 @@ namespace CampusAssist
         private void onMail(object sender, RoutedEventArgs e)
         {
             refreshMailBtn.IsEnabled = !refreshMailBtn.IsEnabled;
+            refreshMailBtn.Content = "正在收取...";
             Thread mailThread = new Thread(refreshMail);
             mailThread.Start();
-            refreshMailBtn.IsEnabled = !refreshMailBtn.IsEnabled;
         }
 
         private void onSubject(object sender, RoutedEventArgs e)
