@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Resources;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -67,7 +68,12 @@ namespace CampusAssist
             weekToday = Convert.ToInt32(DateTime.Now.DayOfWeek);
             dateLbl.Content = DateTime.Now.ToLongDateString().ToString() + " " + weekdays[weekToday];
             notify = new System.Windows.Forms.NotifyIcon();
-            notify.Icon = new System.Drawing.Icon("icon.ico");
+            try {
+                notify.Icon = new System.Drawing.Icon("icon.ico");
+            }catch
+            {
+                //MessageBox.Show("missing icon.ico, please ensure that the execution and the icon are in the same directory.");
+            }
             notify.Click += new EventHandler(reSize);
             if ((string)classLbl.Content == "")
             {
@@ -140,15 +146,15 @@ namespace CampusAssist
 
         private void Window_StateChanged(object sender, EventArgs e)
         {
-            if (WindowState == WindowState.Minimized)
-            {
-                ShowInTaskbar = false;
-                notify.Visible = true;
-                notify.BalloonTipText = "ECNU校园助手已隐藏到托盘";
-                notify.BalloonTipTitle = "ECNU校园助手";
-                notify.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info;
-                notify.ShowBalloonTip(1000);
-            }
+            //if (WindowState == WindowState.Minimized)
+            //{
+            //    ShowInTaskbar = false;
+            //    notify.Visible = true;
+            //    notify.BalloonTipText = "ECNU校园助手已隐藏到托盘";
+            //    notify.BalloonTipTitle = "ECNU校园助手";
+            //    notify.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+            //    notify.ShowBalloonTip(1000);
+            //}
         }
 
         private void reSize(object sender, EventArgs e)

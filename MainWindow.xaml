@@ -346,6 +346,8 @@
                     <Label Content="Peng Yifeng" Foreground="#FF1239E8"/>
                     <Label Content="He Hongliang" Foreground="#FF1239E8"/>
                     <Label Content="All rights reserved 2015"/>
+                    <Label Content="https://github.com/CampusHelper/CampusAssist/" Foreground="#FF1239E8"/>
+
                 </StackPanel>
             </TabItem>
         </TabControl>
