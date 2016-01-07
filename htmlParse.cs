@@ -276,29 +276,29 @@ namespace CampusAssist
         /*
             获取课程表信息
         */
-        public static string[] getSchedule(string htmlstr ,int weekNum)
+        public static string[] getSchedule(string htmlstr, int weekNum)
         {
             Regex re = new Regex(@"new TaskActivity([\s\S]*?)activity =");
             MatchCollection mc = re.Matches(htmlstr);
             int num = mc.Count;
             if (num == 0)
                 return new string[0];
-            string[] rtnStr = new string[num+1];
+            string[] rtnStr = new string[num + 1];
             string tmp = "";
             string last = "";
-            for (int n = 0; n < num+1; n++)
+            for (int n = 0; n < num + 1; n++)
             {
                 string result;
                 int i;
-                if(n == num)
+                if (n == num)
                 {
                     i = htmlstr.IndexOf(last);
-                    result = htmlstr.Substring(i + last.Length) ;
+                    result = htmlstr.Substring(i + last.Length);
                 }
                 else
                     result = mc[n].Value;
                 last = result;
-                re = new Regex(@",""\w{0,5}""");
+                re = new Regex(@","".{0,12}""");
                 tmp = re.Match(result).Value;
                 i = tmp.IndexOf('"') + 1;
                 tmp = tmp.Substring(i);
@@ -355,9 +355,9 @@ namespace CampusAssist
                 }
                 rtnStr[n] += "|" + weeks;               //课程周数
 
-                re = new Regex(@"""\w{0,20}""");
+                re = new Regex(@"""\w{0,11}\d{0,5}"",""0");
                 mctmp = re.Matches(result);
-                tmp = mctmp[3].Value;
+                tmp = re.Match(result).Value;
                 i = tmp.IndexOf('"') + 1;
                 tmp = tmp.Substring(i);
                 i = tmp.IndexOf('"');
@@ -377,7 +377,7 @@ namespace CampusAssist
                 }
                 rtnStr[n] += "|" + count.ToString();
 
-                i = rtnStr[n].IndexOf('|')+1;
+                i = rtnStr[n].IndexOf('|') + 1;
                 string buf = rtnStr[n].Substring(i);
                 i = buf.IndexOf('|');
                 buf = buf.Substring(0, i);
@@ -389,12 +389,12 @@ namespace CampusAssist
                     if (weekNum < weekStart || weekNum > weekEnd)
                         rtnStr[n] += "|Invalid";
                 }
-                else if(buf == "单周")
+                else if (buf == "单周")
                 {
-                    if(weekNum%2 == 0)
+                    if (weekNum % 2 == 0)
                         rtnStr[n] += "|Invalid";
                 }
-                else if(buf == "双周")
+                else if (buf == "双周")
                 {
                     if (weekNum % 2 != 0)
                         rtnStr[n] += "|Invalid";
