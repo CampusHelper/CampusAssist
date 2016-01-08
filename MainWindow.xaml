@@ -46,7 +46,7 @@
                     <StackPanel Orientation="Horizontal">
                         <Label Content="您今天的课程有"/>
                     </StackPanel>
-                    <Label x:Name="classLbl" Foreground="#FF1239E8"/>
+                    <Label x:Name="classLbl" Foreground="#FF1239E8" Content="[您今天没有要上的课程]"/>
                     <StackPanel Orientation="Horizontal">
                         <Label x:Name="balanceMainLbl" Content="" Foreground="#FF1239E8"/>
                     </StackPanel>
@@ -341,7 +341,7 @@
                     <Label Content="关于"/>
                 </TabItem.Header>
                 <StackPanel Background="#33FFFFFF">
-                    <Label Content="华师大校园助手 V1.0 β" FontSize="32"/>
+                    <Label Content="华师大校园助手 V0.79 β" FontSize="32"/>
                     <Label Content="Huang Hui" Foreground="#FF1239E8"/>
                     <Label Content="Peng Yifeng" Foreground="#FF1239E8"/>
                     <Label Content="He Hongliang" Foreground="#FF1239E8"/>
